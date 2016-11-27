@@ -223,7 +223,7 @@ def confirm_registration (request, token):
         muser.user.save()
         muser.save()
         new_user = authenticate(username=muser.user.username, password=muser.user.password)
-        login(request, muser.user)
+        login(request, new_user)
         print('user confirmed')
         return redirect('/')
     else:
