@@ -58,35 +58,54 @@ def saveDocument(request):
 	docs = Document.objects.filter(author_id=muser.id, title=title)
 	if len(docs) > 0:
 		doc = docs[0]
-		s3 = boto3.client('s3')
-		s3.upload_file('TextEditor/Documents/%s.html' % title, 'smartexdocuments', muser.user.username+title+'.txt')
-		with open(doc.File.name,'w') as f:
+		# with open(doc.File.name,'w') as f:
+		# 	mFile = File(f)
+		# 	mFile.write(request.POST['content'])
+		# 	mFile.write(citationDiv)
+		# 	mFile.write(request.POST['citations'])
+
+		# with open(doc.File.name,'r') as f:
+		# 	mFile = File(f)
+		# 	doc.File = mFile
+		# 	doc.save()
+		with open('TextEditor/Documents/'muser.user.username+'.temp','w') as f:
 			mFile = File(f)
 			mFile.write(request.POST['content'])
 			mFile.write(citationDiv)
 			mFile.write(request.POST['citations'])
-		with open(doc.File.name,'r') as f:
-			mFile = File(f)
-			doc.File = mFile
-			doc.save()
+		s3 = boto3.client('s3')
+		s3.upload_file('TextEditor/Documents/'muser.user.username+'.temp', 'smartexdocuments', muser.user.username+title+'.txt')
+		doc.date_modified=datetime.datetime.now()
+		doc.save()
 	else:
-		with open('TextEditor/Documents/%s.html' % title,'w') as f:
+		# with open('TextEditor/Documents/%s.html' % title,'w') as f:
+		# 	mFile = File(f)
+		# 	mFile.write(request.POST['content'])
+		# 	mFile.write(citationDiv)
+		# 	mFile.write(request.POST['citations'])
+
+		# with open('TextEditor/Documents/%s.html' % title,'r') as f:
+		# 	mFile = File(f)
+		# 	doc = Document(title=title, 
+		# 		File=mFile, 
+		# 		date_created=datetime.datetime.now(),
+		# 		date_modified=datetime.datetime.now(),
+		# 		author=MUser.objects.get(user_id=request.user.id))
+		# 	doc.save()
+
+		with open('TextEditor/Documents/'muser.user.username+'.temp','w') as f:
 			mFile = File(f)
 			mFile.write(request.POST['content'])
 			mFile.write(citationDiv)
 			mFile.write(request.POST['citations'])
-
 		s3 = boto3.client('s3')
-		s3.upload_file('TextEditor/Documents/%s.html' % title, 'smartexdocuments', muser.user.username+title+'.txt')
-		with open('TextEditor/Documents/%s.html' % title,'r') as f:
-			mFile = File(f)
-			doc = Document(title=title, 
-				File=mFile, 
-				date_created=datetime.datetime.now(),
-				date_modified=datetime.datetime.now(),
-				author=MUser.objects.get(user_id=request.user.id))
-			doc.save()
-
+		s3.upload_file('TextEditor/Documents/'muser.user.username+'.temp', 'smartexdocuments', muser.user.username+title+'.txt')
+		doc = Document(title=title, 
+			File=mFile, 
+			date_created=datetime.datetime.now(),
+			date_modified=datetime.datetime.now(),
+			author=MUser.objects.get(user_id=request.user.id))
+		doc.save()
 
 	return render(request, 'editor.html', {})
 
@@ -104,7 +123,10 @@ def loadDashboard(request):
 
 def loadDocument(request, docID):
 	doc = Document.objects.get(id=docID)
-	[content,citations] = doc.File.read().split(citationDiv)[:2]
+	s3 = boto3.resource('s3')
+	s3.meta.client.download_file('smartexdocuments', request.user.username+doc.title+'.txt', 'TextEditor/Documents/'muser.user.username+'.temp')
+	with open('TextEditor/Documents/'muser.user.username+'.temp', 'r') as f:
+		[content,citations] = doc.File.read().split(citationDiv)[:2]
 	resp = {'content': content,
 			'citations': citations}
 	print (docID, content, citations)

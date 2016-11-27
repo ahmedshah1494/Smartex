@@ -14,6 +14,5 @@ class MUser(models.Model):
 class Document(models.Model):
 	title = models.CharField(max_length=100)
 	author = models.ForeignKey(MUser, on_delete=models.CASCADE)
-	File = models.FileField()
 	date_created = models.DateTimeField()
 	date_modified = models.DateTimeField()
