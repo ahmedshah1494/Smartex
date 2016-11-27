@@ -29,7 +29,7 @@ import context
 import json
 import googleTest
 import urllib
-
+import boto3
 citationDiv = '*=======================Citations=======================*'
 @login_required
 def loadEditor(request, docID):
@@ -64,9 +64,9 @@ def saveDocument(request):
 			mFile.write(citationDiv)
 			mFile.write(request.POST['citations'])
 		with open(doc.File.name,'r') as f:
-			mFile = File(f)
-			doc.File = mFile
-			doc.save()
+			# mFile = File(f)
+			# doc.File = mFile
+			# doc.save()
 	else:
 		with open('TextEditor/Documents/%s.html' % title,'w') as f:
 			mFile = File(f)
@@ -74,6 +74,8 @@ def saveDocument(request):
 			mFile.write(citationDiv)
 			mFile.write(request.POST['citations'])
 
+		s3 = boto3.client('s3')
+		s3.upload_file('TextEditor/Documents/%s.html' % title, 'smartexdocuments', muser.user.username+title+'.txt')
 		with open('TextEditor/Documents/%s.html' % title,'r') as f:
 			mFile = File(f)
 			doc = Document(title=title, 
