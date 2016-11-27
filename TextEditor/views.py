@@ -100,8 +100,7 @@ def saveDocument(request):
 			mFile.write(request.POST['citations'])
 		s3 = boto3.client('s3')
 		s3.upload_file('TextEditor/Documents/'+muser.user.username+'.temp', 'smartexdocuments', muser.user.username+title+'.txt')
-		doc = Document(title=title, 
-			File=mFile, 
+		doc = Document(title=title,
 			date_created=datetime.datetime.now(),
 			date_modified=datetime.datetime.now(),
 			author=MUser.objects.get(user_id=request.user.id))
