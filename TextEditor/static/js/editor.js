@@ -354,7 +354,7 @@ function saveDocument(){
            title: $('.doc_title').val()}, 
           function(data){
             console.log("posted")
-            saveLabel = $('saveTime')
+            saveLabel = $('#saveTime')
             saveLabel.html('Last Save:' + getDate(new Date))
           })
 }
