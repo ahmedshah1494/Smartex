@@ -30,6 +30,7 @@ import json
 import googleTest
 import urllib
 import boto3
+import os
 citationDiv = '*=======================Citations=======================*'
 @login_required
 def loadEditor(request, docID):
