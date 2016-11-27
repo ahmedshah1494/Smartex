@@ -19,5 +19,5 @@ urlpatterns = [
     url(r'^translate/(.+?)/(\S+)', views.translate),
     url(r'^lookup/(.*)', views.lookup),
     url(r'^logout$', django.contrib.auth.views.logout_then_login, name='logout'),
-    # url(r'^static/(?P<path>.*)$', django.views.static.serve, {'document_root': settings.STATIC_ROOT}),
+    url(r'^static/(?P<path>.*)$', django.views.static.serve, {'document_root': settings.STATIC_ROOT}),
 ]
