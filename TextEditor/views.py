@@ -58,6 +58,8 @@ def saveDocument(request):
 	docs = Document.objects.filter(author_id=muser.id, title=title)
 	if len(docs) > 0:
 		doc = docs[0]
+		s3 = boto3.client('s3')
+		s3.upload_file('TextEditor/Documents/%s.html' % title, 'smartexdocuments', muser.user.username+title+'.txt')
 		with open(doc.File.name,'w') as f:
 			mFile = File(f)
 			mFile.write(request.POST['content'])
