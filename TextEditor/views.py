@@ -58,16 +58,6 @@ def saveDocument(request):
 	docs = Document.objects.filter(author_id=muser.id, title=title)
 	if len(docs) > 0:
 		doc = docs[0]
-		# with open(doc.File.name,'w') as f:
-		# 	mFile = File(f)
-		# 	mFile.write(request.POST['content'])
-		# 	mFile.write(citationDiv)
-		# 	mFile.write(request.POST['citations'])
-
-		# with open(doc.File.name,'r') as f:
-		# 	mFile = File(f)
-		# 	doc.File = mFile
-		# 	doc.save()
 		with open('TextEditor/Documents/'+muser.user.username+'.temp','w') as f:
 			mFile = File(f)
 			mFile.write(request.POST['content'])
@@ -77,22 +67,8 @@ def saveDocument(request):
 		s3.upload_file('TextEditor/Documents/'+muser.user.username+'.temp', 'smartexdocuments', muser.user.username+title+'.txt')
 		doc.date_modified=datetime.datetime.now()
 		doc.save()
+		os.remove('TextEditor/Documents/'+muser.user.username+'.temp')
 	else:
-		# with open('TextEditor/Documents/%s.html' % title,'w') as f:
-		# 	mFile = File(f)
-		# 	mFile.write(request.POST['content'])
-		# 	mFile.write(citationDiv)
-		# 	mFile.write(request.POST['citations'])
-
-		# with open('TextEditor/Documents/%s.html' % title,'r') as f:
-		# 	mFile = File(f)
-		# 	doc = Document(title=title, 
-		# 		File=mFile, 
-		# 		date_created=datetime.datetime.now(),
-		# 		date_modified=datetime.datetime.now(),
-		# 		author=MUser.objects.get(user_id=request.user.id))
-		# 	doc.save()
-
 		with open('TextEditor/Documents/'+muser.user.username+'.temp','w') as f:
 			mFile = File(f)
 			mFile.write(request.POST['content'])
@@ -105,7 +81,7 @@ def saveDocument(request):
 			date_modified=datetime.datetime.now(),
 			author=MUser.objects.get(user_id=request.user.id))
 		doc.save()
-
+		os.remove('TextEditor/Documents/'+muser.user.username+'.temp')
 	return render(request, 'editor.html', {})
 
 @login_required
@@ -128,6 +104,7 @@ def loadDocument(request, docID):
 		[content,citations] = f.read().split(citationDiv)[:2]
 	resp = {'content': content,
 			'citations': citations}
+	os.remove('TextEditor/Documents/'+muser.user.username+'.temp')
 	print (docID, content, citations)
 	return HttpResponse(json.dumps(resp), content_type='application/json')	
 
