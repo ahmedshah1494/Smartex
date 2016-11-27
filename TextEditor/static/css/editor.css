@@ -1,0 +1,49 @@
+#editor{
+	height: 700px;
+	width: auto;
+
+	overflow-y: scroll;
+	margin-bottom: 10px;
+}
+/*#editor-container{
+	margin-left: 16.5vw;
+	margin-right: 16.5vw;
+}*/
+.doc_title{
+	font-size: 24px;
+	border-top: none;
+	border-left: none;
+	border-right: none;
+	border-bottom: solid;
+	border-width: 0.5px;
+	border-color: gray;
+	margin-bottom: 20px;
+	/*margin-right: 16vw;
+	margin-left: 16vw;*/
+}
+
+#suggestionsPane{
+	border: solid;
+	border-width: 0.5px;
+	border-color: #CCCCCC;
+	/* the following line makes the box expand*/
+	/*flex-direction: column;*/
+	/* the following line makes the box scrollable you 
+	need to comment the height in order to use the previous approach*/
+	height: 766px;
+	overflow-y: scroll;
+}
+
+.custom_link{
+	color: black !important;
+}
+.custom_link:hover{
+	color:#06c !important;
+}
+
+#citations{
+	margin-top: 10px;
+	height: 100px;
+	width: 100%;
+	overflow-y: scroll;
+}

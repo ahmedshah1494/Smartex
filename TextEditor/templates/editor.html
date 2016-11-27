@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block local_css %}
+<!-- Theme included stylesheets -->
+<link href="//cdn.quilljs.com/1.1.3/quill.snow.css" rel="stylesheet">
+<link href="//cdn.quilljs.com/1.1.3/quill.bubble.css" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/editor.css">
+{% endblock %}
+{% block local_js %}
+<!-- Main Quill library -->
+<script src="//cdn.quilljs.com/1.1.3/quill.js" type="text/javascript"></script>
+<script src="//cdn.quilljs.com/1.1.3/quill.min.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.debug.js"></script>
+<script src='/static/js/queue_implementation.js'></script>
+<script src='/static/js/editor.js'></script>
+
+
+<script src='/static/js/translate.js'></script>
+<script type='text/javascript'>
+	loadDocument({{ docID }})
+</script>
+{% endblock %}
+{% block navbarButtons %}
+    <li ><a class="nav-btn" href="{% url 'dashboard' %}">Dashboard <span></span></a></li>
+    <li ><a href="/profile" class="nav-btn">My profile <span ></span></a></li>
+{% endblock navbarButtons %}
+
+
+{% block login %}
+    <a  href='/logout' type="submit" role = "button" class="logout-btn">Logout</a>
+{% endblock login %}
+
+
+{% block body %}
+	<div class='row'>
+		<div class='col-md-1'></div>
+		<div class='col-md-11'>
+			<div id='document_data'>
+				<input type='text' value='{{ title }}' placeholder='Enter Document Title' class='doc_title'></inpu>
+			</div>
+		</div>
+	</div>
+	<div class='row'>
+		<div class='col-md-1'></div>
+		<div class='col-md-7'>
+			<div id='editor-container'>
+				<div id='editor'></div>
+				{% csrf_token %}
+			</div>
+			<textarea readonly id='citations'>
+			</textarea>
+		</div>
+		<div class='col-md-3' id="suggestionsPane">
+			<div class='row' style='background-color:#EEEEEE;'>
+				<h3 align='center'>Suggestions</h3>
+			</div>
+			<div id='general_info'> 
+				<h4 class = "info_title"> General Info </h4> 
+			</div>
+			<br>
+			<div id='text_replacement'> 
+				<h4 class = "info_title">Text Replacement </h4>
+				<ul style="list-style: none"; id = "text_replacement_list"> </ul>
+			</div>
+			<br>
+			<div id='related_links'> 
+				<h4 class = "info_title">Related Links </h4>
+				<ul style="list-style: none"; id = "related_links_list"> </ul>
+			</div>
+		</div>
+	</div>
+{% endblock %}

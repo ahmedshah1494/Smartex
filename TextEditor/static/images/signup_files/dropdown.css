@@ -1,0 +1,26 @@
+#login-dp
+{
+	width:265px;
+}
+.remember_me
+{
+	font-size: 13px;
+}
+
+.forgot_pwd
+{
+	color:#0AA3FA;
+	font-size: 13px;
+	text-align: right;
+    float: right;
+}
+.dropdown-form
+{
+	margin-left: 10px;
+	margin-right: 10px;
+}
+.form-control
+{
+	margin-bottom: 5px;
+	margin-top: 5px;
+}

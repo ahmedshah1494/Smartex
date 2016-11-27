@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block background_img %}
+<img src="../static/images/bg9.jpg" alt="hello" class="blur-bg" />
+{% endblock background_img %}
+{% block login %}
+{% include 'loginnavbar.html' %}
+{% endblock login %}
+{% block main_container %}
+<div class="main-container ">
+	<div class="col-lg-4 col-lg-offset-4 col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-12 ">
+
+		<ul>
+		{% for error in signupform.non_field_errors %}
+			<li style="color: red">
+			{{ error }}
+			</li>
+		{% endfor %}
+		</ul>
+		<div class = 'signup_box'>
+			<form method="post" action="signup">
+			<table class = 'signup_rows'>
+			{% for field in signupform.visible_fields %}
+				<tr>
+				  <td style="color: red">{{field.errors}}</td>
+				</tr>
+			{% endfor %}
+			{% for field in signupform.hidden_fields %}
+			{{ field }}
+			{% endfor %}
+			{% for field in signupform.visible_fields %}
+			<tr>
+			  <td>{{field}}</td>
+			</tr>
+			{% endfor %}
+			</table>
+			{% for field in signupform.hidden_fields %}
+			{{ field }}
+			{% endfor %}
+			{% csrf_token %}
+			<input type="submit" class="signup_button" value="Signup!" />
+			</form>
+		</div>
+	</div>
+</div>
+{% endblock main_container %}
+

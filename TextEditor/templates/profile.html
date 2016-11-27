@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% block local_css %}
+	<link rel="stylesheet" href="/static/css/profile.css">
+{% endblock %}
+{% block local_js %}
+	
+{% endblock %}
+{% block navbarButtons %}
+    <li><a class="nav-btn" href="dashboard">Dashboard <span></span></a></li>
+    <li class="active"><a href="profile" class="nav-btn">My profile <span ></span></a></li>
+    {% endblock navbarButtons %}
+    {% block login %}
+    <a  href='/logout' type="submit" role = "button" class="logout-btn">Logout</a>
+    {% endblock login %}
+{% block body %}
+	<div class="row">
+		<div class='col-md-1'></div>
+		<div class='col-md-10 intro'>
+			<!-- <div class='col-md-1' id='DP_div'>
+				<img id='DP' src='/static/images/gicon.png'></img>
+			</div> -->
+			<div class='col-md-9' id='uname'>
+				<h1>{{ full_name }}</h1>
+			</div>
+			<div class='col-md-2 edit'>
+				<a id='email_edit' class='edit' href='update_profile'><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>  Edit</a>
+			</div>
+		</div>
+		<div class='col-md-1'></div>
+	</div>
+	<div class='row'>		
+		<div class='col-md-1'></div>
+		<div class='col-md-10 info'>
+			<div class='col-md-1'>
+				<p class='lead' style='color:gray;'>Username</p>
+			</div>
+			<div class='col-md-1'></div>
+			<div class='col-md-7'>
+				<p class='lead'>{{ username }}</p>
+			</div>		
+		</div>
+		<div class='col-md-1'></div>
+	</div>
+
+	<div class='row'>		
+		<div class='col-md-1'></div>
+		<div class='col-md-10 info'>
+			<div class='col-md-1'>
+				<p class='lead' style='color:gray;'>Email</p>
+			</div>
+			<div class='col-md-1'></div>
+			<div class='col-md-7'>
+				<p class='lead'>{{ email }}</p>
+			</div>
+		</div>
+		<div class='col-md-1'></div>
+	</div>
+
+	<div class='row'>		
+		<div class='col-md-1'></div>
+		<div class='col-md-10 info'>
+			<div class='col-md-1'>
+				<p class='lead' style='color:gray;'>Password</p>
+			</div>
+			<div class='col-md-1'></div>
+			<div class='col-md-7'>
+				<p class='lead'>**********</p>
+			</div>
+		</div>
+		<div class='col-md-1'></div>
+	</div>
+	<!-- <div class='card' style="display:block">
+        <div id='DP_div' align='right'>
+          <img id='DP' src='/static/images/gicon.png'></img>
+        </div>
+        <h3 id='uname'>John Doe</h3>
+        
+      </div>
+
+      <div id='divider'>
+        <h1> User Info </h1>
+      </div>
+      <div id = 'info'>
+        <p>Username: jdoe</p>
+          <p>Email: jdoe@live.com</p>
+          <p>Age: -1</p>
+          <p>Bio: hahahah</p>      
+	      <a href='/grumblr/edit_profile'><h3> Update </h3></a>    
+        </div> -->
+         
+{% endblock %}

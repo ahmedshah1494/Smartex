@@ -1,0 +1,16 @@
+{% block login %}
+      <form id="signin" class="navbar-form navbar-right" method="post" role="form" action="{% url 'login' %}" accept-charset="UTF-8">
+        <div class="input-group">
+            <input id="username" type="username" class=" username form-control" name="username" value="" placeholder="username" required>
+        </div>
+
+        <div class="input-group">
+            <input id="password" type="password" class="password form-control" name="password" value="" placeholder="Password" required>
+        </div>
+        <span>
+        <button type="submit" class="my-button">Login</button>
+        <input type="hidden" name="next" value="{{ next }}" />
+                {% csrf_token %}
+        </span>
+     </form>
+{% endblock login %}

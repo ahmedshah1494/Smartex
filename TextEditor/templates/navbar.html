@@ -1,0 +1,22 @@
+<nav class="navbar navbar-default" style="background-color: #499CCA;">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="pull-left" href="#"><img class="logo" src="../static/images/gicon.png" alt="hello"></a>
+    </div>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+    <ul class="nav navbar-nav">
+    {% block navbarButtons %}
+    <li class="active"><a class="nav-btn" href="">Dashboard <span></span></a></li>
+    <li><a href="" class="nav-btn">My profile <span ></span></a></li>
+    {% endblock navbarButtons %}
+    </ul>
+    <a  href='/logout' type="submit" role = "button" class="logout-btn">Logout</a>
+     </div>
+  </div>
+</nav>

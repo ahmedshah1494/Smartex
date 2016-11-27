@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block local_css %}
+	<link rel="stylesheet" href="/static/css/dashboard.css">
+{% endblock local_css%}
+
+{% block local_js %}
+	<script src='/static/js/dashboard.js'></script>
+{% endblock local_js%}
+{% block navbarButtons %}
+    <li class="active"><a class="nav-btn" href="dashboard">Dashboard <span></span></a></li>
+    <li><a href="profile" class="nav-btn">My profile <span ></span></a></li>
+    {% endblock navbarButtons %}
+    {% block login %}
+    <a  href='/logout' type="submit" role = "button" class="logout-btn">Logout</a>
+    {% endblock login %}
+{% block body %}
+	<div class='row'>
+		<div class='col-md-1'></div>
+		<div class='col-md-10'>
+			<h1> Welcome {{ first_name }} </h1>
+			<a href='editor/0' role='button' type="button" class="btn mButton">Start New Document</a> <br>
+			{% for doc in documents %}
+				<a href="editor/{{ doc.id }}">
+					<div class='doc_thumb col-md-2'>
+						<div class='row'>
+							<div class='doc_name col-md-2'>
+								<h2>{{ doc.title }}</h2>
+							</div>
+						</div>
+						<div class='row'>
+							<div class='col-md-1'>
+								<span class="glyphicon glyphicon-time"></span>
+							</div>
+							<div class='col-md-10'>
+								<p>{{ doc.date_modified }}</p>
+							</div>
+						</div>
+					</div>
+				</a>
+			{% endfor %}
+		</div>
+		<div class='col-md-1'></div>
+	</div>
+
+	
+{% endblock %}

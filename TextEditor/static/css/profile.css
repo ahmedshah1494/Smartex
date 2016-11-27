@@ -1,0 +1,29 @@
+#DP_div{
+	margin-right: 20px;
+}
+#DP{
+	width: 100px;
+	height: 100px;
+}
+#uname{
+	padding-top: 50px;
+}
+
+.intro{
+	border-bottom: solid;
+	border-width: 0.5px; 
+}
+
+.info{
+	padding-top: 20px;
+	border-bottom: solid;
+	border-width: 0.25px;
+	border-color: #EEE;
+}
+.edit{
+	padding-top: 90px;
+	color: #000;
+}
+.edit:hover{
+	color: #499CCA;
+}

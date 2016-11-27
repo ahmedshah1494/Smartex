@@ -1,0 +1,17 @@
+.doc_thumb{
+	border: solid;
+	border-width: 0.5px;
+	border-color: gray;
+	overflow: hidden;
+	margin-right: 10px;
+	margin-bottom: 10px;
+}
+.doc_thumb h2{
+	white-space: normal;
+}
+.doc_name{
+	height: 100px;
+}
+.doc_meta{
+	
+}
