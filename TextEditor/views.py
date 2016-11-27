@@ -64,9 +64,9 @@ def saveDocument(request):
 			mFile.write(citationDiv)
 			mFile.write(request.POST['citations'])
 		with open(doc.File.name,'r') as f:
-			# mFile = File(f)
-			# doc.File = mFile
-			# doc.save()
+			mFile = File(f)
+			doc.File = mFile
+			doc.save()
 	else:
 		with open('TextEditor/Documents/%s.html' % title,'w') as f:
 			mFile = File(f)
