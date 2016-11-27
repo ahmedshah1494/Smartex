@@ -418,5 +418,5 @@ $(document).ready(function (){
 
 
   setInterval(analyseContext, 3000)
-  setInterval(saveDocument, 2000)
+  setInterval(saveDocument, 10000)
 })
