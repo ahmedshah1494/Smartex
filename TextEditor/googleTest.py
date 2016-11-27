@@ -32,7 +32,7 @@ def customSearch(query):
 	}
 	url = service_url + '?' + urllib.urlencode(params)
 	response = json.loads(urllib.urlopen(url).read())
-	# print query, response['items']
+	print query, response['items']
 	if 'items' in response:
 		return response['items']
 	else:
