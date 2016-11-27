@@ -124,8 +124,8 @@ def loadDashboard(request):
 def loadDocument(request, docID):
 	doc = Document.objects.get(id=docID)
 	s3 = boto3.resource('s3')
-	s3.meta.client.download_file('smartexdocuments', request.user.username+doc.title+'.txt', 'TextEditor/Documents/'muser.user.username+'.temp')
-	with open('TextEditor/Documents/'muser.user.username+'.temp', 'r') as f:
+	s3.meta.client.download_file('smartexdocuments', request.user.username+doc.title+'.txt', 'TextEditor/Documents/'+muser.user.username+'.temp')
+	with open('TextEditor/Documents/'+muser.user.username+'.temp', 'r') as f:
 		[content,citations] = doc.File.read().split(citationDiv)[:2]
 	resp = {'content': content,
 			'citations': citations}
