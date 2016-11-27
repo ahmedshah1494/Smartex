@@ -34,7 +34,7 @@ function getDate(jsonDate){
     else{
         tod = "p.m."
     }
-    return months[date.getUTCMonth()]+". "+date.getUTCDate()+". "+date.getUTCFullYear()+". "+(parseInt(date.getUTCHours()%13)+1)+":"+date.getUTCMinutes()+" "+tod
+    return months[date.getUTCMonth()]+". "+date.getUTCDate()+". "+date.getUTCFullYear()+". "+(parseInt(date.getUTCHours()%13)+1)+":"+date.getUTCMinutes()+":"+date.getUTCSeconds()+" "+tod
 }
 
 function convertHtmlToRtf(html) {
