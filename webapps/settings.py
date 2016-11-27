@@ -123,4 +123,6 @@ MEDIA_URL = '/media/'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
+PROJECT_ROOT = os.path.dirname('../TextEditor')
 STATIC_URL = '/static/'
+STATIC_ROOT = PROJECT_ROOT + 'static/'
