@@ -218,12 +218,12 @@ def confirm_registration (request, token):
     except:
     	raise Http404("Activation Key Not Found")
 
-    if  muser.user.is_active == 0:
-        muser.user.is_active = 1
+    if  muser.user.is_active == False:
+        muser.user.is_active = True
         muser.user.save()
         muser.save()
-        new_user = authenticate(username=muser.user.username, password=muser.user.password)
-        login(request, new_user)
+        # new_user = authenticate(username=muser.user.username, password=muser.user.password)
+        # login(request, new_user)
         print('user confirmed')
         return redirect('/')
     else:
