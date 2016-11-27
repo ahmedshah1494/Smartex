@@ -3,6 +3,8 @@ import django.contrib.auth.views
 from django.contrib import admin
 from . import views
 from webapps import settings
+from django.views.static import serve
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.loadDashboard),
@@ -19,5 +21,5 @@ urlpatterns = [
     url(r'^translate/(.+?)/(\S+)', views.translate),
     url(r'^lookup/(.*)', views.lookup),
     url(r'^logout$', django.contrib.auth.views.logout_then_login, name='logout'),
-    url(r'^static/(?P<path>.*)$', django.views.static.serve, {'document_root': settings.STATIC_ROOT}),
+    url(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
 ]
