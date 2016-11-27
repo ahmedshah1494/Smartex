@@ -105,7 +105,7 @@ def loadDocument(request, docID):
 		[content,citations] = f.read().split(citationDiv)[:2]
 	resp = {'content': content,
 			'citations': citations}
-	os.remove('TextEditor/Documents/'+muser.user.username+'.temp')
+	os.remove('TextEditor/Documents/'+request.user.username+'.temp')
 	print (docID, content, citations)
 	return HttpResponse(json.dumps(resp), content_type='application/json')	
 
