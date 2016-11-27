@@ -355,7 +355,7 @@ function saveDocument(){
           function(data){
             console.log("posted")
             saveLabel = $('#saveTime')
-            saveLabel.html('Last Save:' + getDate(new Date))
+            saveLabel.html('Last Save:' + new Date
           })
 }
 
