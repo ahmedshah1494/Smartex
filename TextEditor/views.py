@@ -15,7 +15,8 @@ from TextEditor.forms import *
 #EMAIL
 from django.core.mail import send_mail
 import datetime
-
+import django.contrib.staticfiles
+from django.contrib.staticfiles.templatetags.staticfiles import static
 from django.shortcuts import render_to_response
 from django.db.models import Q
 from django.core.files import File
