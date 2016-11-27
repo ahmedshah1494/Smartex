@@ -21,6 +21,22 @@ function getCookie(name) {
     return cookieValue;
 }
 
+function getDate(jsonDate){
+    var months = ["Jan", "Feb", "Mar", "Apr", "May",
+                    "Jun", "Jul", "Aug", "Sep", "Oct",
+                    "Nov", "Dec"]
+    date = new Date(jsonDate)
+    var tod;
+    console.log(date)
+    if (Math.floor(date.getUTCHours() / 12) % 2 == 0){
+        tod = "a.m."
+    }
+    else{
+        tod = "p.m."
+    }
+    return months[date.getUTCMonth()]+". "+date.getUTCDate()+". "+date.getUTCFullYear()+". "+(parseInt(date.getUTCHours()%13)+1)+":"+date.getUTCMinutes()+" "+tod
+}
+
 function convertHtmlToRtf(html) {
   // source: http://jsfiddle.net/JamesMGreene/2b6Lc/
       if (!(typeof html === "string" && html)) {
@@ -329,6 +345,20 @@ function citationsToHTML(){
   return citationList.prop('outerHTML')
 }
 
+function saveDocument(){
+  console.log($('.ql-editor').html())
+  console.log(editor.getContents())
+  $.post('/save_document/'+(window.location.href).split('/')[(window.location.href).split('/').length - 1], 
+          {content: JSON.stringify(editor.getContents()),
+           citations: $('#citations').html(),
+           title: $('.doc_title').val()}, 
+          function(data){
+            console.log("posted")
+            saveLabel = $('saveTime')
+            saveLabel.html('Last Save:' + getDate(new Date))
+          })
+}
+
 var specialElementHandlers = {
     '#editor': function (element, renderer) {
         return true;
@@ -383,21 +413,10 @@ $(document).ready(function (){
 
   saveButton.on('click', function(event){
     event.preventDefault();
-
-//    console.log($('.ql-editor').html())
-
-//    $.post('/save_document/'+(window.location.href).split('/')[(window.location.href).split('/').length - 1], 
-//            {content: $('.ql-editor').html(),
-
-		console.log($('.ql-editor').html())
-    console.log(editor.getContents())
-		$.post('/save_document/'+(window.location.href).split('/')[(window.location.href).split('/').length - 1], 
-            {content: JSON.stringify(editor.getContents()),
-             citations: $('#citations').html(),
-             title: $('.doc_title').val()}, 
-            function(data){console.log("posted")})
+		saveDocument()
   })
 
 
   setInterval(analyseContext, 3000)
+  setInterval(saveDocument, 2000)
 })
