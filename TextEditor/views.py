@@ -68,13 +68,13 @@ def saveDocument(request):
 		# 	mFile = File(f)
 		# 	doc.File = mFile
 		# 	doc.save()
-		with open('TextEditor/Documents/'muser.user.username+'.temp','w') as f:
+		with open('TextEditor/Documents/'+muser.user.username+'.temp','w') as f:
 			mFile = File(f)
 			mFile.write(request.POST['content'])
 			mFile.write(citationDiv)
 			mFile.write(request.POST['citations'])
 		s3 = boto3.client('s3')
-		s3.upload_file('TextEditor/Documents/'muser.user.username+'.temp', 'smartexdocuments', muser.user.username+title+'.txt')
+		s3.upload_file('TextEditor/Documents/'+muser.user.username+'.temp', 'smartexdocuments', muser.user.username+title+'.txt')
 		doc.date_modified=datetime.datetime.now()
 		doc.save()
 	else:
@@ -93,13 +93,13 @@ def saveDocument(request):
 		# 		author=MUser.objects.get(user_id=request.user.id))
 		# 	doc.save()
 
-		with open('TextEditor/Documents/'muser.user.username+'.temp','w') as f:
+		with open('TextEditor/Documents/'+muser.user.username+'.temp','w') as f:
 			mFile = File(f)
 			mFile.write(request.POST['content'])
 			mFile.write(citationDiv)
 			mFile.write(request.POST['citations'])
 		s3 = boto3.client('s3')
-		s3.upload_file('TextEditor/Documents/'muser.user.username+'.temp', 'smartexdocuments', muser.user.username+title+'.txt')
+		s3.upload_file('TextEditor/Documents/'+muser.user.username+'.temp', 'smartexdocuments', muser.user.username+title+'.txt')
 		doc = Document(title=title, 
 			File=mFile, 
 			date_created=datetime.datetime.now(),
