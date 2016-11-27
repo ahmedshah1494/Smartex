@@ -186,14 +186,14 @@ def signup (request):
     print(signupform.cleaned_data['username'])
     username = signupform.cleaned_data['username']
     h = hashlib.sha224(username.encode('utf-8'))
-    token = h.hexdigest()
+    token = h.hexdigest()[:40]
     newUser.activation_key = token
     newUser.save()
     email_body = """
             Welcome to grumblr, please click the link below to
             verify your email address and complete the registration
             of your account:
-            http://localhost:8000/confirm/"""+token
+            http://smartexx.herokuapp.com/confirm/"""+token
             #% (request.get_host(),
                 # reverse('confirm') +  "?username=" + new_user.username+"&token="+token
             #    reverse('confirm', args = (token))
