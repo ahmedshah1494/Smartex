@@ -386,7 +386,7 @@ $(document).ready(function (){
 
   editor = new Quill('#editor', options);
   var downloadButton = $('<span class="ql-formats"><a class="custom_link" href="" id="a">Download</a></span>')
-  var saveButton = $('<span class="ql-formats"><a class="custom_link" href="">Save</a></span>')
+  var saveButton = $('<span class="ql-formats"><a class="custom_link" id="saveButton" href="">Save</a></span>')
   var pdfButton = $('<span class="ql-formats"><a class="custom_link" href="">Download PDF</a></span>')
   
   $('.ql-toolbar').append(saveButton)
