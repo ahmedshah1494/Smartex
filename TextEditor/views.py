@@ -36,7 +36,13 @@ citationDiv = '*=======================Citations=======================*'
 def loadEditor(request, docID):
 	#print( int(docID) == 0)
 	if int(docID) == 0:
-		context = {}
+		doc = Document(title="Untitled Document",
+			date_created=datetime.datetime.now(),
+			date_modified=datetime.datetime.now(),
+			author=MUser.objects.get(user_id=request.user.id))
+		doc.save()
+		print doc.id
+		return redirect('/editor/'+str(doc.id))
 	else:
 		doc = Document.objects.get(id=docID)
 		context = {'docID': docID,
@@ -45,44 +51,42 @@ def loadEditor(request, docID):
 	return render(request, 'editor.html', context)
 
 @login_required
-def saveDocument(request):
+def saveDocument(request,docID):
 	if request.method != "POST":
 		return render(request, 'editor.html', {})
 	# #print request.POST['title']
 	# path = default_storage.save('/path/to/file', ContentFile('new content'))
 	try:
-		title = request.POST['title']
+		doc =Document.objects.get(id=docID)
 	except:
 		raise Http404("Wrong Request")
-	#print title
-	muser = MUser.objects.get(user_id=request.user.id)
-	docs = Document.objects.filter(author_id=muser.id, title=title)
-	if len(docs) > 0:
-		doc = docs[0]
-		with open('TextEditor/Documents/'+muser.user.username+'.temp','w') as f:
-			mFile = File(f)
-			mFile.write(request.POST['content'])
-			mFile.write(citationDiv)
-			mFile.write(request.POST['citations'])
-		s3 = boto3.client('s3')
-		s3.upload_file('TextEditor/Documents/'+muser.user.username+'.temp', 'smartexdocuments', muser.user.username+title+'.txt')
-		doc.date_modified=datetime.datetime.now()
-		doc.save()
-		os.remove('TextEditor/Documents/'+muser.user.username+'.temp')
-	else:
-		with open('TextEditor/Documents/'+muser.user.username+'.temp','w') as f:
-			mFile = File(f)
-			mFile.write(request.POST['content'])
-			mFile.write(citationDiv)
-			mFile.write(request.POST['citations'])
-		s3 = boto3.client('s3')
-		s3.upload_file('TextEditor/Documents/'+muser.user.username+'.temp', 'smartexdocuments', muser.user.username+title+'.txt')
-		doc = Document(title=title,
-			date_created=datetime.datetime.now(),
-			date_modified=datetime.datetime.now(),
-			author=MUser.objects.get(user_id=request.user.id))
-		doc.save()
-		os.remove('TextEditor/Documents/'+muser.user.username+'.temp')
+	# if len(docs) > 0:
+	# 	doc = docs[0]
+	with open('TextEditor/Documents/'+request.user.username+'.temp','w') as f:
+		mFile = File(f)
+		mFile.write(request.POST['content'])
+		mFile.write(citationDiv)
+		mFile.write(request.POST['citations'])
+	s3 = boto3.client('s3')
+	s3.upload_file('TextEditor/Documents/'+request.user.username+'.temp', 'smartexdocuments', str(docID)+'.txt')
+	doc.date_modified=datetime.datetime.now()
+	doc.title = request.POST['title']
+	doc.save()
+	os.remove('TextEditor/Documents/'+request.user.username+'.temp')
+	# else:
+	# 	with open('TextEditor/Documents/'+muser.user.username+'.temp','w') as f:
+	# 		mFile = File(f)
+	# 		mFile.write(request.POST['content'])
+	# 		mFile.write(citationDiv)
+	# 		mFile.write(request.POST['citations'])
+	# 	s3 = boto3.client('s3')
+	# 	s3.upload_file('TextEditor/Documents/'+muser.user.username+'.temp', 'smartexdocuments', muser.user.username+title+'.txt')
+	# 	doc = Document(title=title,
+	# 		date_created=datetime.datetime.now(),
+	# 		date_modified=datetime.datetime.now(),
+	# 		author=MUser.objects.get(user_id=request.user.id))
+	# 	doc.save()
+	# 	os.remove('TextEditor/Documents/'+muser.user.username+'.temp')
 	return render(request, 'editor.html', {})
 
 @login_required
@@ -100,7 +104,7 @@ def loadDashboard(request):
 def loadDocument(request, docID):
 	doc = Document.objects.get(id=docID)
 	s3 = boto3.resource('s3')
-	s3.meta.client.download_file('smartexdocuments', request.user.username+doc.title+'.txt', 'TextEditor/Documents/'+request.user.username+'.temp')
+	s3.meta.client.download_file('smartexdocuments', str(docID)+'.txt', 'TextEditor/Documents/'+request.user.username+'.temp')
 	with open('TextEditor/Documents/'+request.user.username+'.temp', 'r') as f:
 		[content,citations] = f.read().split(citationDiv)[:2]
 	resp = {'content': content,

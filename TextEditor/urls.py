@@ -13,7 +13,7 @@ urlpatterns = [
 	url(r'^signup$', views.signup, name = 'signup'),
     url(r'^profile$', views.profile, name='profile'),
     url(r'^update_profile$', views.updateProfile, name='profile'),
-    url(r'^save_document', views.saveDocument, name='save_document'),
+    url(r'^save_document/(?P<docID>\d+)', views.saveDocument, name='save_document'),
     url(r'^dashboard', views.loadDashboard, name = 'dashboard'),
     url(r'^editor/(?P<docID>\d+)', views.loadEditor),
     url(r'^load_document/(?P<docID>\d+)', views.loadDocument),
