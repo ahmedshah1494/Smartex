@@ -255,7 +255,7 @@ def getSuggestions(query, pos):
 	query = reduce(lambda x,y: x+"+"+y, query.split())
 	url = 'https://api.datamuse.com/words?ml=' + query
 	response = json.loads(urllib.urlopen(url).read())
-	response = filter(lambda x: pos[0] in x['tags'], response)
+	response = filter(lambda x: 'tags' in x and pos[0] in x['tags'], response)
 	response = response[:min(5, len(response))]
 	response = map(lambda x: [query, x['word'], dictionaryLookup(x['word'],pos)], response)
 	response = filter(lambda x: x[1] != None, response)
