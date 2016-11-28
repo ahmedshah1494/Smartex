@@ -349,7 +349,7 @@ function saveDocument(){
   console.log($('.ql-editor').html())
   console.log(editor.getContents())
   if ($('.doc_title').val().length == 0){
-    alert("Please Enter Title");
+    saveLabel.html('Autosave disabled, please enter a title to enable autosave')
     return;
   }
   $.post('/save_document/'+(window.location.href).split('/')[(window.location.href).split('/').length - 1], 
@@ -417,6 +417,10 @@ $(document).ready(function (){
 
   saveButton.on('click', function(event){
     event.preventDefault();
+    if ($('.doc_title').val().length == 0){
+      alert("Please enter a title")
+      return;
+    }
 		saveDocument()
   })
 
