@@ -16,7 +16,7 @@ def getKeywords(string):
 		  PN: {<NNP>+}               # chunk sequences of proper nouns
 		""",
 		r"""
-		  VP: {<VB|VBG|VBN|VBD|VBZ|NNS><DT|RB>*<NN|NNP|JJ|RB>}               # chunk sequences of proper nouns
+		  VP: {<VB|VBG|VBN|VBD|VBZ|NNS><DT|RB>*<JJ|RB>}               # chunk sequences of proper nouns
 		""",]
 		trees = []
 		for grammar in grammars:
@@ -26,6 +26,14 @@ def getKeywords(string):
 			for i in t.subtrees(filter=(lambda x: x.label() in ["NP", 'PN', 'VP'])):
 				result[i.label()].append(reduce(lambda x,y: x+' '+y, map(lambda a: a[0][0], i.pos())))
 	return result
+
+def getPOSTags(string):
+	sentences = nltk.sent_tokenize(string)
+	sentences = [nltk.word_tokenize(sent) for sent in sentences]
+	sentences = [nltk.pos_tag(sent) for sent in sentences]
+	return sentences[0]
+
+# print getPOSTags('has a large house')
 # print getKeywords("Obama talks too much.")
 
 # def getMeaning(string):

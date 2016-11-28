@@ -250,12 +250,18 @@ def dictionaryLookup(word, pos):
 	except:
 		return []
 
-def getSuggestions(query, pos):
-	print query
+def makeReverseDictionaryQuery(query):
 	query = reduce(lambda x,y: x+"+"+y, query.split())
 	url = 'https://api.datamuse.com/words?ml=' + query
 	response = json.loads(urllib.urlopen(url).read())
+	return response	
+
+def getSuggestions(query, pos):
+	print query
+	response = makeReverseDictionaryQuery(query)
+	# keyword = filter(lambda x: x[1] == 'NN' if pos == 'noun' else x[1] in ['VB','VBG','VBN','VBD','VBZ','NNS'], context.getPOSTag(query))
 	response = filter(lambda x: 'tags' in x and pos[0] in x['tags'], response)
+	response = filter(lambda x: )
 	response = response[:min(5, len(response))]
 	response = map(lambda x: [query, x['word'], dictionaryLookup(x['word'],pos)], response)
 	response = filter(lambda x: x[1] != None, response)
