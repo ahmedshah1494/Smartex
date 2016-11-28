@@ -3,6 +3,13 @@
 	padding-top:20px
 }
 
+#saveButton{
+	background-color: #499CCA;
+	padding: 4px;
+	border-radius: 5px;
+	color: white !important
+}
+
 #editor{
 	height: 700px;
 	width: auto;

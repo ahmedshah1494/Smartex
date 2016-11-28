@@ -408,7 +408,7 @@ $(document).ready(function (){
 	downloadButton.on('click', function(){
 		console.log($('.ql-editor').html())
 		console.log(convertHtmlToRtf($('.ql-editor').html()))
-		download(convertHtmlToRtf($('.ql-editor').html()) + citationsToHTML(), "smarTEX_document.rtf", 'text/plain')
+		download(convertHtmlToRtf($('.ql-editor').html()) + citationsToHTML(), $('.doc_title').val()+".rtf", 'text/plain')
 	})
 
   saveButton.on('click', function(event){
