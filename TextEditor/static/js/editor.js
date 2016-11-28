@@ -348,6 +348,10 @@ function citationsToHTML(){
 function saveDocument(){
   console.log($('.ql-editor').html())
   console.log(editor.getContents())
+  if ($('.doc_title').val().length == 0){
+    alert("Please Enter Title");
+    return;
+  }
   $.post('/save_document/'+(window.location.href).split('/')[(window.location.href).split('/').length - 1], 
           {content: JSON.stringify(editor.getContents()),
            citations: $('#citations').html(),
