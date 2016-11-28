@@ -16,7 +16,7 @@ def getKeywords(string):
 		  PN: {<NNP>+}               # chunk sequences of proper nouns
 		""",
 		r"""
-		  VP: {<VB|VBG|VBN|VBD|NNS><DT|RB>*<JJ|RB>}               # chunk sequences of proper nouns
+		  VP: {<VB|VBG|VBN|VBD|NNS><DT|RB>*<NN|JJ|RB>}               # chunk sequences of proper nouns
 		""",]
 		trees = []
 		for grammar in grammars:
