@@ -348,6 +348,7 @@ function citationsToHTML(){
 function saveDocument(){
   console.log($('.ql-editor').html())
   console.log(editor.getContents())
+  saveLabel = $('#saveTime')
   if ($('.doc_title').val().length == 0){
     saveLabel.html('Autosave disabled, please enter a title to enable autosave')
     return;
@@ -357,8 +358,7 @@ function saveDocument(){
            citations: $('#citations').html(),
            title: $('.doc_title').val()}, 
           function(data){
-            console.log("posted")
-            saveLabel = $('#saveTime')
+            console.log("posted")            
             saveLabel.html('Last Save:' + (new Date()))
           })
 }
