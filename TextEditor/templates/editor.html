@@ -22,8 +22,9 @@
 </script>
 {% endblock %}
 {% block navbarButtons %}
-    <li ><a class="nav-btn" href="{% url 'dashboard' %}">Dashboard <span></span></a></li>
-    <li ><a href="/profile" class="nav-btn">My profile <span ></span></a></li>
+    <li ><span class= 'nav_btn_holder' = ><a class="nav_btn" href="{% url 'dashboard' %}"> Dashboard </a></span></li>
+    <li ><span class= 'nav_btn_holder' = ><a class="nav_btn" href="/profile"> My profile </a></span></li>
+    <!-- <li ><a href="/profile" class="nav_btn">My profile <span ></span></a></li> -->
 {% endblock navbarButtons %}
 
 
@@ -57,9 +58,11 @@
 		<div class='col-md-3' id="suggestionsPane">
 			<div class='row' style='background-color:#EEEEEE;'>
 				<h3 align='center'>Suggestions</h3>
+
 			</div>
 			<div id='general_info'> 
 				<h4 class = "info_title"> General Info </h4> 
+				<ul style="list-style: none"; id = "general_info_list"> </ul>
 			</div>
 			<br>
 			<div id='text_replacement'> 

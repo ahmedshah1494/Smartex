@@ -4,12 +4,16 @@ from django.contrib import admin
 from . import views
 from webapps import settings
 from django.views.static import serve
+from TextEditor.forms import *
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.loadDashboard),
     #url(r'^$', views.signup),#django.contrib.auth.views.login, {'template_name':'login.html'}),
-    url(r'^login$', django.contrib.auth.views.login, {'template_name':'signup.html'}, name='login'),
+    url(r'^login$', django.contrib.auth.views.login, 
+        {'template_name':'signup.html', 
+        'extra_context': {'signupform': SignupNewUser()}},
+        name='login'),
 	url(r'^signup$', views.signup, name = 'signup'),
     url(r'^profile$', views.profile, name='profile'),
     url(r'^update_profile$', views.updateProfile, name='profile'),

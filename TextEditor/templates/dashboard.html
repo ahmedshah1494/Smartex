@@ -3,8 +3,10 @@
 	<link rel="stylesheet" href="/static/css/dashboard.css">
 {% endblock local_css%}
 {% block navbarButtons %}
-    <li class="active"><a class="nav-btn" href="dashboard">Dashboard <span></span></a></li>
-    <li><a href="profile" class="nav-btn">My profile <span ></span></a></li>
+<!--     <li class="active"><a class="nav_btn" href="dashboard">Dashboard <span></span></a></li>
+    <li><a href="profile" class="nav_btn">My profile <span ></span></a></li> -->
+	<li ><span class= 'nav_btn_holder' = ><a class="nav_btn" href="{% url 'dashboard' %}"> Dashboard </a></span></li>
+    <li ><span class= 'nav_btn_holder' = ><a class="nav_btn" href="profile"> My profile </a></span></li>
     {% endblock navbarButtons %}
     {% block login %}
     <a  href='/logout' type="submit" role = "button" class="logout-btn">Logout</a>

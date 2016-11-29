@@ -26,6 +26,7 @@
 
     /*box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);*/
 }
+
 .logout-btn
 {
     padding-top: 3px;
@@ -37,7 +38,7 @@
     border-radius: 4px;
     width : 100px;
     margin-top: 10px;
-    position: fixed;
+    position: absolute;
     top:3px;
     right:100px;
     margin-right: -70px;
@@ -45,6 +46,13 @@
     text-align: center;
 
 }
+.logout-btn:hover{
+    text-decoration:none;
+}
+.logout-btn:active {
+    text-decoration: none;
+}
+
 .input-group
 {
 	right: 10px;
@@ -57,13 +65,35 @@
 {
 	margin-top: 0px;
 }
-.nav-btn
+.nav_btn
 {
-    margin-top: 0px;
-    height: 60px;
+/*    margin-top: 0px;
+    height: 60px;*/
+    background-color: #499CCA;
+    border-style: none;
+    color: white;
+    font-size: 17px;
+        width:80px;
+    height: 35px;
+    display:inline-block;
+
+}
+.nav_btn_holder{
+    position: relative;
+    top: 18px;
+    left: 5px;
+    margin-left: 30px;
+
+
 }
 
-
+.nav_btn:hover {
+    color: gray;
+    text-decoration:none;
+}
+.nav_btn:active {
+    text-decoration: none;
+}
 
 
 

@@ -32,6 +32,17 @@ import urllib
 import boto3
 import os
 citationDiv = '*=======================Citations=======================*'
+from django.contrib.auth.views import login as core_login
+
+#myapp/views.py
+# @ratelimit_post(minutes = 1, requests = 4, key_field = 'username')
+
+# def login(request,template_name):
+#     from django.contrib.auth import authenticate
+#     user = authenticate(request.username, request.password)
+#     #template_name = "template_name" + "aaaaa"
+#     return core_login(request, template_name)
+
 @login_required
 def loadEditor(request, docID):
 	#print( int(docID) == 0)

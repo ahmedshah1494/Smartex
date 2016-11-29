@@ -176,12 +176,11 @@ function clean_previous_cards(newly_added_cards){
     }
 }
 function citation_clicked(curr){
-  var link = $(curr).prev().find(">:first-child").text();
+  var link = $(curr).prev().find(">:last-child").text();
   addCitation(link);
 
 }
 function display_on_suggestions(suggestion_response){
-
 //________________________________GENERAL INFO SECTION ________________________________  
 if (typeof(suggestion_response['general info']) != "undefined")
 {
@@ -203,12 +202,10 @@ if (typeof(suggestion_response['general info']) != "undefined")
         }
 
       var general_info_card = $("<div>", {"class": "general_info_card"});
-      var general_info_image = document.createElement('span');
-      general_info_image.class = ("general_info_image");
-      var general_info_data = document.createElement('span');
-      general_info_data.class = ("general_info_data");
+      var general_info_image = $("<span>", {"class": "general_info_image"});
+      var general_info_data = $("<span>", {"class": "general_info_data"});
       var general_info_link = $("<div>", {"class": "general_info_link"});
-      var general_info_link_button = $("<button>", {"class": "citation_button", "type":"button",'onclick':"citation_clicked(this)"});
+      var general_info_link_button = $("<button>", {"class": "citation_button1", "type":"button",'onclick':"citation_clicked(this)"});
       
       if (typeof(general_info_json.result.image) != 'undefined'){
         loadImage(general_info_json.result.image.contentUrl, 60, 60, general_info_image);      
@@ -220,9 +217,11 @@ if (typeof(suggestion_response['general info']) != "undefined")
       general_info_card.append(general_info_data);
       general_info_card.append(general_info_link);
       general_info_card.append(general_info_link_button);
+      general_info_card.append('<hr size="30">');
 
-      var general_info_box = $("#general_info");
+      var general_info_box = $("#general_info_list");
       general_info_box.append(general_info_card);
+
       newly_added_cards++;
 
 
@@ -271,38 +270,56 @@ if (typeof(suggestion_response['general info']) != "undefined")
   
       text_replacement_list.append(list_elem);
     }
-  }
-  //________________________________RELATED LINKS SECTION ________________________________ 
-    if (typeof(suggestion_response['links']) != "undefined"){     
-        var related_links_list_input = suggestion_response['links'][0];
-        if (typeof(related_links_list_input) == 'undefined'){
-          related_links_list_input = [];
-        }
-        //['google.com','yahoo.fr','france24.com', 'cnn.com'];
-        var related_links = $("#related_links_list");
-        console.log('heres related link list input');
-        //console.log(related_links_list_input[0]);
-        var related_links_size = 7;
-        var related_links_li_kept = related_links_size - related_links_list_input.length;
-        //console.log(related_links_li_kept);
-        if (related_links_li_kept <= 0){
-          related_links.html('');
-          related_links_li_kept = 0;
-        }
-    
-      var list_length = $("#related_links_list li").length;
-      for (i = 0; i < (list_length - related_links_li_kept);i++) {
-        $('#related_links_list li:first').remove();
-      }
-      for (i = 0; (i < related_links_list_input.length && i < related_links_size) ; i++) {
-        var citation_link_button = $("<button>", {"class": "citation_button", "type":"button",'onclick':"citation_clicked(this)"});
-        citation_link_button.append("Cite");
-        sentence = related_links_list_input[i].link;//['link'];
-        related_links.append('<li><a href = '+sentence+'>'+sentence+'</a></li>');
-        related_links.append(citation_link_button);
-        }
-      }
+
+}
+
+  //________________________________RELATED LINKS SECTION ________________________________   
+  if (typeof(suggestion_response['links']) != "undefined"){       
+    var related_links_list_input = suggestion_response['links'][0];
+    if (typeof(related_links_list_input) == 'undefined'){
+      related_links_list_input = [];
     }
+    //['google.com','yahoo.fr','france24.com', 'cnn.com'];
+    var related_links = $("#related_links_list");
+    console.log('heres related link list input');
+    //console.log(related_links_list_input[0]);
+    var related_links_size = 7;
+    var related_links_li_kept = related_links_size - related_links_list_input.length;
+    //console.log(related_links_li_kept);
+    if (related_links_li_kept <= 0){
+      related_links.html('');
+      related_links_li_kept = 0;
+    }
+
+  var list_length = $("#related_links_list li").length;
+  for (i = 0; i < (list_length - related_links_li_kept);i++) {
+    $('#related_links_list li:first').remove();
+  }
+  for (i = 0; (i < related_links_list_input.length && i < related_links_size) ; i++) {
+    // var citation_link_button = $("<button>", {"class": "citation_button", "type":"button",'onclick':"citation_clicked(this)"});
+    // citation_link_button.append("Cite");
+    console.log('_________________________________________LINKS_________________________')
+    console.log(related_links_list_input[i]);
+    sentence = related_links_list_input[i].link;//['link'];
+    console.log('sentence');
+    console.log(sentence);
+    title = related_links_list_input[i].title;
+    htmlTitle = related_links_list_input[i].htmlTitle;
+    snippet = related_links_list_input[i].snippet;
+    htmlSnippet = related_links_list_input[i].htmlSnippet;
+    t = '<p class ="link_title">'+title+'</p>';
+    s = '<p class ="link_snippet">'+htmlSnippet+'</p>';
+    l = '<a class ="link_link" href = "'+sentence+'">'+sentence+'</a>';
+    b = '<button class = "citation_button2" type = "button" onclick = "citation_clicked(this)">Cite</button>';
+    console.log('link html');
+    console.log(l);
+    related_links.append('<li><div class="link_div">'+t+s+l+'</div>'+b+'</li><hr size="30">');
+    //related_links.append('<li><a href = '+sentence+'>'+sentence+'</a> <iframe src='+sentence+'</li>');
+    // related_links.append(citation_link_button);
+    }
+}
+
+  }
 
 
 function analyseContext(){
@@ -396,7 +413,16 @@ $(document).ready(function (){
   var downloadButton = $('<span class="ql-formats"><a class="custom_link" href="" id="a">Download</a></span>')
   var saveButton = $('<span class="ql-formats"><a class="custom_link" id="saveButton" href="">Save</a></span>')
   var pdfButton = $('<span class="ql-formats"><a class="custom_link" href="">Download PDF</a></span>')
-  
+  $(document).keydown(function(event) {
+        // If Control or Command key is pressed and the S key is pressed
+        // run save function. 83 is the key code for S.
+        if((event.ctrlKey || event.metaKey) && event.which == 83) {
+            saveDocument();
+            //event.preventDefault();
+            return false;
+        };
+    }
+);
   $('.ql-toolbar').append(saveButton)
   $('.ql-toolbar').append(downloadButton)
   $('.ql-toolbar').append(pdfButton)

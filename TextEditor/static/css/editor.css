@@ -42,10 +42,27 @@
 	/*flex-direction: column;*/
 	/* the following line makes the box scrollable you 
 	need to comment the height in order to use the previous approach*/
-	height: 766px;
+	min-height: 766px;
+	/*overflow-y: scroll;*/
+}
+#general_info_list{
+	height: 150px;
+	overflow-y: scroll;
+
+}
+/*#general_info{
+	margin-top: 20px;
+
+}*/
+#text_replacement_list{
+	height: 150px;
 	overflow-y: scroll;
 }
+#related_links_list{
+	height: 370px;
+	overflow-y: scroll;
 
+}
 .custom_link{
 	color: black !important;
 }
@@ -59,3 +76,89 @@
 	width: 100%;
 	overflow-y: scroll;
 }
+#related_links_list{
+	margin-left: -30px;
+}
+#text_replacement_list{
+	margin-left: -30px;
+}
+.info_title{
+	color:   #2b552b;
+	text-align: center;
+	text-decoration: underline;
+	margin-bottom: 20px;
+}
+
+.link_title{
+	font-weight:bold;
+	font-style: italic;
+	color: #834C24;
+	font-size: 13px;
+	margin-left: 3px;
+	margin-top: 2px;
+
+}
+.link_snippet{
+	font-size: 12px;
+	margin-left: 5px;
+	margin-right: 5px;
+
+}
+.link_link{
+	margin-left: 5px;
+	margin-right: 5px;
+}
+.link_div{
+	/*border:1px solid  #e6b3cc;*/
+	/*border-radius: 5px;*/
+	margin: 3px;
+/*	margin-left: -40px;
+*/
+}
+.general_info_image{
+	margin: 8px;
+
+}
+.general_info_data{
+	margin: 4px;
+
+}
+.general_info_link{
+	margin: 4px;
+
+}
+.citation_button1{
+	border-width: 2px;
+	border-radius: 5px;
+	border-color: #f2f2f2;
+	color:  #737373;
+	/*font-weight:bold;*/
+	width :100px;
+	background-color: #fff9eF;
+}
+.citation_button{
+	border-width: 2px;
+	border-radius: 5px;
+	border-color: #f2f2f2;
+	color:  #737373;
+	/*font-weight:bold;*/
+	width :100px;
+	background-color: #fff9eF;
+}
+/*.citation_button2{
+	border-width: 1px;
+	border-radius: 5px;
+	border-color: white;
+
+	width :100px;
+	background-color: #fff8dc;
+}*/
+
+
+
+
+
+
+
+
+
