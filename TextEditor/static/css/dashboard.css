@@ -1,23 +1,26 @@
+.doc_name{
+	overflow: hidden;
+	height: 100px;
+	width: auto;
+	white-space: normal;
+}
 .doc_thumb{
 	border: solid;
 	border-width: 0.5px;
 	border-color: gray;
+	border-radius: 8px;
 	overflow: hidden;
 	margin-right: 10px;
 	margin-bottom: 10px;
 	margin-top: 10px;
 	margin-left: 10px;
 }
-.doc_thumb h2{
-	white-space: normal;
-}
-.doc_name{
-	height: 100px;
+.doc_thumb p{
+	vertical-align: middle;
 }
 .doc_meta{
 	
 }
-
 .mButton{
 	background-color: #499CCA;
 	color: white;

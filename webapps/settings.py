@@ -53,7 +53,12 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware'
 ]
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.live.com'
+EMAIL_HOST_USER = 'grumblr@hotmail.com'
+EMAIL_HOST_PASSWORD = 'Mounira123'
+EMAIL_PORT = 587
 ROOT_URLCONF = 'TextEditor.urls'
 # URL to use if the authentication system requires a user to log in.
 LOGIN_URL = '/signup'

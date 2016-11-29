@@ -2,10 +2,6 @@
 {% block local_css %}
 	<link rel="stylesheet" href="/static/css/dashboard.css">
 {% endblock local_css%}
-
-{% block local_js %}
-	<script src='/static/js/dashboard.js'></script>
-{% endblock local_js%}
 {% block navbarButtons %}
     <li class="active"><a class="nav-btn" href="dashboard">Dashboard <span></span></a></li>
     <li><a href="profile" class="nav-btn">My profile <span ></span></a></li>
@@ -24,7 +20,7 @@
 					<div class='doc_thumb col-md-2'>
 						<div class='row'>
 							<div class='doc_name col-md-2'>
-								<h2>{{ doc.title }}</h2>
+								<p class='lead'>{{ doc.title }}</p>
 							</div>
 						</div>
 						<div class='row'>
