@@ -185,6 +185,7 @@ function display_on_suggestions(suggestion_response){
 //________________________________GENERAL INFO SECTION ________________________________  
 if (typeof(suggestion_response['general info']) != "undefined")
 {
+  console.log(suggestion_response['general info'])
   var cards_list_input = suggestion_response['general info'].length;
   var cards_list = $("#general_info");
   
@@ -229,78 +230,79 @@ if (typeof(suggestion_response['general info']) != "undefined")
   clean_previous_cards(newly_added_cards);
 }
 //________________________________TEXT REPLACEMENT SECTION ________________________________  
-
-var text_replacement_list_input = suggestion_response['replacements'];
-var text_replacement_list = $("#text_replacement_list");
-var text_replacement_size = 7;
-var text_replacement_li_kept = text_replacement_size - text_replacement_list_input.length;
-console.log(text_replacement_size);
-if (text_replacement_li_kept <= 0){
-  text_replacement_list.html('');
-  text_replacement_li_kept = 0;
-}
-
-var list_length = $("#text_replacement_list li").length/2;
-for (i = 0; i < (list_length - text_replacement_li_kept);i++) {
-  $('#text_replacement_list li:first').remove();
-}
-for (i = 0; (i < text_replacement_list_input.length && i < text_replacement_size) ; i++) {
-  if (text_replacement_list_input[i].length  < 2)
-  {
-    continue;
-  }
-  sentence = text_replacement_list_input[i][0] + ' --> ' +  text_replacement_list_input[i][1];
-  for(k = 0; k < sentence.length ; k ++){
-    sentence = sentence.replace("+", " ");  
-  }
+  if (typeof(suggestion_response['replacements']) != "undefined"){
+    var text_replacement_list_input = suggestion_response['replacements'];
+    var text_replacement_list = $("#text_replacement_list");
+    var text_replacement_size = 7;
+    var text_replacement_li_kept = text_replacement_size - text_replacement_list_input.length;
+    console.log(text_replacement_size);
+    if (text_replacement_li_kept <= 0){
+      text_replacement_list.html('');
+      text_replacement_li_kept = 0;
+    }
   
-  exp = text_replacement_list_input[i][2];
-  //console.log(sentence);
-  var list_elem = document.createElement('li');
-  var explanation = document.createElement('p');
-  explanation.class =  ("explanation");
-  list_elem.class = ("b_sentences");
-  list_elem.append(sentence);
-  if (!(exp === null)){
-    explanation.append(exp);
-
+    var list_length = $("#text_replacement_list li").length/2;
+    for (i = 0; i < (list_length - text_replacement_li_kept);i++) {
+      $('#text_replacement_list li:first').remove();
+    }
+    for (i = 0; (i < text_replacement_list_input.length && i < text_replacement_size) ; i++) {
+      if (text_replacement_list_input[i].length  < 2)
+      {
+        continue;
+      }
+      sentence = text_replacement_list_input[i][0] + ' --> ' +  text_replacement_list_input[i][1];
+      for(k = 0; k < sentence.length ; k ++){
+        sentence = sentence.replace("+", " ");  
+      }
+      
+      exp = text_replacement_list_input[i][2];
+      //console.log(sentence);
+      var list_elem = document.createElement('li');
+      var explanation = document.createElement('p');
+      explanation.class =  ("explanation");
+      list_elem.class = ("b_sentences");
+      list_elem.append(sentence);
+      if (!(exp === null)){
+        explanation.append(exp);
+  
+      }
+      //comment this out if you don't wan an empty explanation html
+      list_elem.append(explanation);
+  
+      text_replacement_list.append(list_elem);
+    }
   }
-  //comment this out if you don't wan an empty explanation html
-  list_elem.append(explanation);
-
-  text_replacement_list.append(list_elem);
-}
-
-  //________________________________RELATED LINKS SECTION ________________________________      
-  var related_links_list_input = suggestion_response['links'][0];
-  if (typeof(related_links_list_input) == 'undefined'){
-    related_links_list_input = [];
-  }
-  //['google.com','yahoo.fr','france24.com', 'cnn.com'];
-  var related_links = $("#related_links_list");
-  console.log('heres related link list input');
-  //console.log(related_links_list_input[0]);
-  var related_links_size = 7;
-  var related_links_li_kept = related_links_size - related_links_list_input.length;
-  //console.log(related_links_li_kept);
-  if (related_links_li_kept <= 0){
-    related_links.html('');
-    related_links_li_kept = 0;
-  }
-
-var list_length = $("#related_links_list li").length;
-for (i = 0; i < (list_length - related_links_li_kept);i++) {
-  $('#related_links_list li:first').remove();
-}
-for (i = 0; (i < related_links_list_input.length && i < related_links_size) ; i++) {
-  var citation_link_button = $("<button>", {"class": "citation_button", "type":"button",'onclick':"citation_clicked(this)"});
-  citation_link_button.append("Cite");
-  sentence = related_links_list_input[i].link;//['link'];
-  related_links.append('<li><a href = '+sentence+'>'+sentence+'</a></li>');
-  related_links.append(citation_link_button);
-  }
-}
-
+  //________________________________RELATED LINKS SECTION ________________________________ 
+    if (typeof(suggestion_response['links']) != "undefined"){     
+        var related_links_list_input = suggestion_response['links'][0];
+        if (typeof(related_links_list_input) == 'undefined'){
+          related_links_list_input = [];
+        }
+        //['google.com','yahoo.fr','france24.com', 'cnn.com'];
+        var related_links = $("#related_links_list");
+        console.log('heres related link list input');
+        //console.log(related_links_list_input[0]);
+        var related_links_size = 7;
+        var related_links_li_kept = related_links_size - related_links_list_input.length;
+        //console.log(related_links_li_kept);
+        if (related_links_li_kept <= 0){
+          related_links.html('');
+          related_links_li_kept = 0;
+        }
+    
+      var list_length = $("#related_links_list li").length;
+      for (i = 0; i < (list_length - related_links_li_kept);i++) {
+        $('#related_links_list li:first').remove();
+      }
+      for (i = 0; (i < related_links_list_input.length && i < related_links_size) ; i++) {
+        var citation_link_button = $("<button>", {"class": "citation_button", "type":"button",'onclick':"citation_clicked(this)"});
+        citation_link_button.append("Cite");
+        sentence = related_links_list_input[i].link;//['link'];
+        related_links.append('<li><a href = '+sentence+'>'+sentence+'</a></li>');
+        related_links.append(citation_link_button);
+        }
+      }
+    }
 
 
 function analyseContext(){

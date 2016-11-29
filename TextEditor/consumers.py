@@ -5,6 +5,7 @@ from channels.sessions import channel_session
 from models import *
 import context, googleTest
 import urllib
+import threading
 
 log = logging.getLogger(__name__)
 
@@ -32,24 +33,55 @@ def getSuggestions(query, pos):
     response = filter(lambda x: x[1] != None, response)
     return response
 
-def lookup(text):
+def lookup(text, reply_channel):
     keywords = context.getKeywords(text)
     googleResponse = []
     replacements = []
     links = []
     response = {}
-    for pn in keywords['PN']:
-        googleResponse.append(googleTest.lookup(pn))
-        links.append(googleTest.customSearch(pn + reduce(lambda x,y: x + " " + y, keywords['VP'] + ['']) + reduce(lambda x,y: x + " " + y,keywords["NP"] + [''])))
-    response['general info'] = googleResponse
-    response['links'] = links
+
+    def lookUpGoogleKG():
+        print 't1 started'
+        for pn in keywords['PN']:
+            # googleResponse.append(googleTest.lookup(pn))
+            res = googleTest.lookup(pn)
+            response = {'general info': [res]}
+            reply_channel.send({'text': json.dumps(response)})
+
+    def lookupLinks():
+        print 't2 started'
+        for pn in keywords['PN']:
+            # links.append(googleTest.customSearch(pn + reduce(lambda x,y: x + " " + y, keywords['VP'] + ['']) + reduce(lambda x,y: x + " " + y,keywords["NP"] + [''])))
+            res = (googleTest.customSearch(pn + reduce(lambda x,y: x + " " + y, keywords['VP'] + ['']) + reduce(lambda x,y: x + " " + y,keywords["NP"] + [''])))
+            response = {'links': [res]}
+            reply_channel.send({'text': json.dumps(response)})
+    # response['links'] = links
     # print googleResponse
-    for vp in keywords['VP']:
-        replacements += getSuggestions(vp, 'verb')
-    for np in keywords['NP']:
-        replacements += getSuggestions(np, 'noun')
-    response['replacements'] = replacements
-    return response
+    def lookupVP():
+        print 't3 started'
+        for vp in keywords['VP']:
+            # replacements += getSuggestions(vp, 'verb')
+            res = getSuggestions(vp, 'verb')
+            response = {'replacements': res}
+            reply_channel.send({'text': json.dumps(response)})
+    def lookupNP():   
+        print 't4 started'         
+        for np in keywords['NP']:
+            # replacements += getSuggestions(np, 'noun')
+            res = getSuggestions(np, 'noun')
+            response = {'replacements': res}
+            reply_channel.send({'text': json.dumps(response)})
+    # response['replacements'] = replacements
+
+    t1 = threading.Thread(target=lookUpGoogleKG)
+    t2 = threading.Thread(target=lookupLinks)
+    t3 = threading.Thread(target=lookupVP)
+    t4 = threading.Thread(target=lookupNP)
+    t1.start()
+    t2.start()
+    t3.start()
+    t4.start()
+    # return response
 
 @channel_session
 def ws_connect(message):
@@ -78,8 +110,8 @@ def ws_receive(message):
     docID = message.channel_session['Document']
     data = message['text']
     print data
-    response = lookup(data)
-    message.reply_channel.send({'text': json.dumps(response)})
+    response = lookup(data, message.reply_channel)
+    # message.reply_channel.send({'text': json.dumps(response)})
 
 @channel_session
 def ws_disconnect(message):
