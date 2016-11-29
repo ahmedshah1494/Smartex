@@ -4,7 +4,7 @@ var general_info_cards = new Queue();
 console.log(general_info_cards);
 var lastSentence = ''
 var number_cards_displayed = 3;
-
+var chat_socket;
 function getCookie(name) {  
     var cookieValue = null;
     if (document.cookie && document.cookie != '') {
@@ -320,10 +320,12 @@ function analyseContext(){
   lookup_string = suggestion_request.reverse().join('. ');
   console.log(lookup_string);
   
-  $.ajax("/lookup/"+lookup_string, {dataType: 'json'})
-        .done(function(json){
-          display_on_suggestions(json);
-        });
+  // $.ajax("/lookup/"+lookup_string, {dataType: 'json'})
+  //       .done(function(json){
+  //         display_on_suggestions(json);
+  //       });
+  
+  chat_socket.send(lookup_string);
 }
 
 function addCitation(text){
@@ -424,7 +426,15 @@ $(document).ready(function (){
 		saveDocument()
   })
 
+  var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
+  // console.log(ws_scheme + '://' + window.location.host + "/editor" + window.location.pathname);
+  chat_socket = new ReconnectingWebSocket(ws_scheme + '://' + window.location.host + window.location.pathname);
+  // requires message to be a json
+  chat_socket.onmessage = function(message){
+    console.log(message['data']);
+    display_on_suggestions(JSON.parse(message['data']));
+  }
 
   setInterval(analyseContext, 3000)
-  setInterval(saveDocument, 5000)
+  // setInterval(saveDocument, 5000)
 })
