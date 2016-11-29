@@ -3,7 +3,7 @@ var contextDelim = '\n'
 var general_info_cards = new Queue();
 console.log(general_info_cards);
 var lastSentence = ''
-var number_cards_displayed = 1;
+var number_cards_displayed = 3;
 
 function getCookie(name) {  
     var cookieValue = null;
