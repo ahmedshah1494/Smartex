@@ -373,7 +373,7 @@ function putCitation(obj){
 
 function addCitation(text){
   citationDiv = $('<div class="row citation">'+
-        '<div class="citationText"><p class="lead">title</p><p>'+text+'</p></div>'+
+        '<div class="citationText"><p>'+text+'</p></div>'+
       '</div>')
   citationBox = $('#citationPane')
   citationDeleteBut = $('<span onclick="deleteCitation(this)" class="glyphicon glyphicon-remove pull-right citationAction citationDelete" aria-hidden="true"></span>')
@@ -457,7 +457,6 @@ $(document).ready(function (){
   });
   $("#dialog_form").on('submit',function(event) {
     event.preventDefault();
-    $("#divdeps").dialog('close');
     
     var csrftoken = getCookie('csrftoken');
     $.ajaxSetup({

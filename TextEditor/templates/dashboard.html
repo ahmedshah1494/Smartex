@@ -20,9 +20,10 @@
 			{% for doc in documents %}
 				
 					<div class='doc_thumb col-md-2'>
+						<a href="{% url 'delete_document' doc.id %}"><span class="glyphicon glyphicon-remove pull-right deleteDocument" aria-hidden="true"></span></a>
 						<div class='row'>
 							<div class='doc_name col-md-2'>
-								<a href="{% url 'delete_document' doc.id %}"><span class="glyphicon glyphicon-remove pull-right deleteDocument" aria-hidden="true"></span></a> 
+				
 								<a href="editor/{{ doc.id }}">
 									<p class='lead'>{{ doc.title }}</p>
 								</a>

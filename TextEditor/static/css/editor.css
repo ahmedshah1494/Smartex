@@ -11,7 +11,7 @@
 }
 
 #editor{
-	height: 700px;
+	height: 1010px;
 	width: auto;
 
 	overflow-y: scroll;
@@ -42,7 +42,7 @@
 	/*flex-direction: column;*/
 	/* the following line makes the box scrollable you 
 	need to comment the height in order to use the previous approach*/
-	min-height: 766px;
+	min-height: 1010px;
 	overflow: scroll;
 	/*overflow-y: scroll;*/
 }
@@ -60,7 +60,7 @@
 	overflow-y: scroll;
 }
 #related_links_list{
-	height: 370px;
+	height: 350px;
 	overflow-y: scroll;
 
 }
