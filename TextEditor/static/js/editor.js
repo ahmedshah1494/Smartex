@@ -5,7 +5,6 @@ var general_info_cards = new Queue();
 var lastSentence = '\n'
 var number_cards_displayed = 3;
 var chat_socket;
-var first_request = true;
 function getCookie(name) {  
     var cookieValue = null;
     if (document.cookie && document.cookie != '') {

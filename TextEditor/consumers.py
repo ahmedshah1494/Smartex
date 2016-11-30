@@ -11,7 +11,7 @@ from django.core.files import File
 from django.db import transaction
 
 log = logging.getLogger(__name__)
-MAX_CACHE_SIZE = 10
+MAX_CACHE_SIZE = 100
 lock = threading.Lock()
 def dictionaryLookup(word, pos):
     url = 'http://api.pearson.com/v2/dictionaries/ldoce5/entries?headword=%s&part_of_speech=%s&limit=2' % (word, pos)
@@ -49,16 +49,15 @@ def evacuateCache():
             i.delete()
     lock.release()
 
+@transaction.atomic
 def cacheLookup(key, dataType, reply_channel):
     h = hashlib.sha224(key)
-    lock.acquire(True)
     item = CachedItem.objects.filter(key=h.hexdigest(), data_type=dataType)[0]
     res = json.loads(item.data_file.file.read())
-    lock.release()
     return res
 
+@transaction.atomic
 def cacheInsert(h, res, dataType, reply_channel):
-    lock.acquire(True)
     with open('TextEditor/cache/'+h.hexdigest(), 'w') as f:
         f.write(json.dumps(res))
     with open('TextEditor/cache/'+h.hexdigest(), 'r') as f:
@@ -66,7 +65,6 @@ def cacheInsert(h, res, dataType, reply_channel):
                             data_type= dataType,
                             data_file=File(f))
         item.save()
-    lock.release()
     evacuateCache()
 
 def lookup(text, reply_channel):
