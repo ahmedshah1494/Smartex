@@ -9,10 +9,14 @@ import threading
 import hashlib
 from django.core.files import File
 from django.db import transaction
+import os
 
 log = logging.getLogger(__name__)
 MAX_CACHE_SIZE = 100
 lock = threading.Lock()
+
+if not os.path.exists('TextEditor/cache'):
+    os.mkdir('TextEditor/cache')
 def dictionaryLookup(word, pos):
     url = 'http://api.pearson.com/v2/dictionaries/ldoce5/entries?headword=%s&part_of_speech=%s&limit=2' % (word, pos)
     response = json.loads(urllib.urlopen(url).read())
@@ -49,14 +53,14 @@ def evacuateCache():
             i.delete()
     lock.release()
 
-@transaction.atomic
+# @transaction.atomic
 def cacheLookup(key, dataType, reply_channel):
     h = hashlib.sha224(key)
     item = CachedItem.objects.filter(key=h.hexdigest(), data_type=dataType)[0]
     res = json.loads(item.data_file.file.read())
     return res
 
-@transaction.atomic
+# @transaction.atomic
 def cacheInsert(h, res, dataType, reply_channel):
     with open('TextEditor/cache/'+h.hexdigest(), 'w') as f:
         f.write(json.dumps(res))
@@ -65,7 +69,7 @@ def cacheInsert(h, res, dataType, reply_channel):
                             data_type= dataType,
                             data_file=File(f))
         item.save()
-    evacuateCache()
+    #evacuateCache()
 
 def lookup(text, reply_channel):
     keywords = context.getKeywords(text)
@@ -73,7 +77,7 @@ def lookup(text, reply_channel):
     replacements = []
     links = []
     response = {}
-    evacuateCache()
+    # evacuateCache()
     def lookUpGoogleKG():
         print 't1 started'
         for pn in keywords['PN']:
