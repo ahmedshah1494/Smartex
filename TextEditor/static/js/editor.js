@@ -457,7 +457,6 @@ $(document).ready(function (){
   });
   $("#dialog_form").on('submit',function(event) {
     event.preventDefault();
-    $("#share_success").fadeIn().delay(1000).fadeOut();
     $("#divdeps").dialog('close');
     
     var csrftoken = getCookie('csrftoken');
@@ -475,6 +474,7 @@ $(document).ready(function (){
         alert("This email address is not registered on SmarTex");
       }
       else{
+        $("#share_success").fadeIn().delay(1000).fadeOut();
         $("#divdeps").dialog('close');
       }
     

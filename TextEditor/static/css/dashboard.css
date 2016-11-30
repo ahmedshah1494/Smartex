@@ -32,6 +32,7 @@
 
 .deleteDocument{
 	color: gray	;
+	float: right;
 }
 .deleteDocument:hover{
 	color: #B50C03;
