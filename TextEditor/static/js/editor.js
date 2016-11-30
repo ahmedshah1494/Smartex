@@ -511,6 +511,6 @@ $(document).ready(function (){
     display_on_suggestions(JSON.parse(message['data']));
   }
 
-  setInterval(analyseContext, 500)
+  setInterval(analyseContext, 1000)
   // setInterval(saveDocument, 5000)
 })
