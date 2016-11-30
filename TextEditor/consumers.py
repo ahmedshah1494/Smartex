@@ -154,15 +154,20 @@ def lookup(text, reply_channel):
                 print 'cache miss on', np
     # response['replacements'] = replacements
 
-    t1 = threading.Thread(target=lookUpGoogleKG)
-    t2 = threading.Thread(target=lookupLinks)
-    t3 = threading.Thread(target=lookupVP)
-    t4 = threading.Thread(target=lookupNP)
-    t1.start()
-    t2.start()
-    t3.start()
-    t4.start()
+    # t1 = threading.Thread(target=lookUpGoogleKG)
+    # t2 = threading.Thread(target=lookupLinks)
+    # t3 = threading.Thread(target=lookupVP)
+    # t4 = threading.Thread(target=lookupNP)
+    # t1.start()
+    # t2.start()
+    # t3.start()
+    # t4.start()
     # return response
+    lookUpGoogleKG()
+    lookupLinks()
+    lookupNP()
+    lookupVP()
+
 
 @channel_session
 def ws_connect(message):
