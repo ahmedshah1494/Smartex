@@ -42,6 +42,28 @@ from django.contrib.auth.views import login as core_login
 #     user = authenticate(request.username, request.password)
 #     #template_name = "template_name" + "aaaaa"
 #     return core_login(request, template_name)
+@login_required
+def deleteDocument(request,docID):
+	print("DOCUMENT TO DELETE")
+	print(docID)
+	errors = []
+	context = {}
+
+    # Deletes the item if present in the todo-list database.
+	try:
+		item_to_delete = Document.objects.get(id=docID)
+		item_to_delete.delete()
+	except ObjectDoesNotExist:
+		raise Http404("Document does not exist")
+
+	muser = MUser.objects.get(user_id=request.user.id)
+	documents = Document.objects.filter(author_id=muser.id)
+	context['documents'] = documents
+	context['first_name'] = request.user.first_name
+	context['errors'] = errors
+	# #print documents[0].title
+	# context['first_name'] = request.user.first_name
+	return redirect('/dashboard')
 
 @login_required
 def loadEditor(request, docID):
@@ -55,7 +77,10 @@ def loadEditor(request, docID):
 		print doc.id
 		return redirect('/editor/'+str(doc.id))
 	else:
-		doc = Document.objects.get(id=docID)
+		try:
+			doc = Document.objects.get(id=docID)
+		except:
+			raise Http404("Document does not exist")
 		context = {'docID': docID,
 					'title': doc.title}
 

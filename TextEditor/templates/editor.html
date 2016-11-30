@@ -36,16 +36,22 @@
 {% block body %}
 	<div class='row'>
 		<div class='col-md-1'></div>
-		<div class='col-md-4'>
+		<div class='col-md-7'>
 			<div id='document_data'>
-				<input type='text' value='{{ title }}' placeholder='Enter Document Title' class='doc_title'></input>
+				<span>
+					<input type='text' value='{{ title }}' placeholder='Enter Document Title' class='doc_title'></input>
+					<button type="button" class ='btn btn-primary' id = "share_btn"> share </button>
+					
+				</span>
+				<span style="display:none; width:100px;" id = "share_success" class="alert alert-success">
+					    <strong>shared!</strong>
+					  </span>
 			</div>
 		</div>
 		<div class='col-md-4'>
 			<p id='saveTime'></p>
 		</div>
-		<div class='col-md-3'>
-			<button id = "share_btn"> share </button>
+		<div class='col-md-1'>
 			<div id="divdeps" style="display:none" title="">
 
 
@@ -64,21 +70,20 @@
 	</div>
 	<div class='row'>
 		<div class='col-md-1'></div>
-		<div class='col-md-2' id="suggestionsPane">
+		<div class='col-md-2 pane'>
 			<div class='row' style='background-color:#EEEEEE;'>
 				<h3 align='center'>Citations</h3>
-
 			</div>
+			<div id="citationPane"></div>
+			
 		</div>
 		<div class='col-md-5'>
 			<div id='editor-container'>
 				<div id='editor'></div>
 				{% csrf_token %}
 			</div>
-			<textarea readonly id='citations'>
-			</textarea>
 		</div>
-		<div class='col-md-3' id="suggestionsPane">
+		<div class='col-md-3 pane' id="suggestionsPane">
 			<div class='row' style='background-color:#EEEEEE;'>
 				<h3 align='center'>Suggestions</h3>
 

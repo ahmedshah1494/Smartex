@@ -27,4 +27,6 @@ urlpatterns = [
     url(r'^lookup/(.*)', views.lookup),
     url(r'^logout$', django.contrib.auth.views.logout_then_login, name='logout'),
     url(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
+    url(r'^delete_document/(?P<docID>\d+)', views.deleteDocument, name='delete_document'),
+
 ]

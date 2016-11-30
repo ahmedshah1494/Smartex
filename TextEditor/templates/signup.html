@@ -16,14 +16,15 @@
 			</li>
 		{% endfor %}
 		</ul>
+		{% for field in signupform.visible_fields %}
+				<tr>
+				  <td class="error2" style="color: red">{{field.errors}}</td>
+				</tr>
+		{% endfor %}
 		<div class = 'signup_box'>
 			<form method="post" action="signup">
 			<table class = 'signup_rows'>
-			{% for field in signupform.visible_fields %}
-				<tr>
-				  <td style="color: red">{{field.errors}}</td>
-				</tr>
-			{% endfor %}
+			
 			{% for field in signupform.hidden_fields %}
 			{{ field }}
 			{% endfor %}

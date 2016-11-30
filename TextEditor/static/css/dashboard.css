@@ -29,3 +29,10 @@
 .mButton:hover{
 	color: white;
 }
+
+.deleteDocument{
+	color: gray	;
+}
+.deleteDocument:hover{
+	color: #B50C03;
+}

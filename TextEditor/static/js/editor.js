@@ -121,7 +121,7 @@ function loadDocument(id){
       console.log($('.ql-editor').html())
       // console.log(json)
       editor.setContents(JSON.parse(json['content']))
-      $('#citations').html(json['citations'])
+      $('#citationPane').html(json['citations'])
     })
 }
 
@@ -356,22 +356,47 @@ function analyseContext(){
   chat_socket.send(lookup_string);
 }
 
+function deleteCitation(obj){
+    $(obj).parent().remove()
+}
+
+function putCitation(obj){
+  allCitations = citationBox.find('.citation')
+  for (i = 0; i < allCitations.length; i++){
+    if (allCitations.eq(i).html() == $(obj).parent().html()){
+      break
+    }
+  }
+  editor.focus()
+  cursorPos = editor.getSelection()
+  editor.insertText(cursorPos, "["+(i+1).toString()+"]")
+}
+
 function addCitation(text){
-  citationBox = $('#citations')
-  citationBox.html((citationBox.html() + text).trim() + '\n')
+  citationDiv = $('<div class="row citation">'+
+        '<div class="citationText"><p class="lead">title</p><p>'+text+'</p></div>'+
+      '</div>')
+  citationBox = $('#citationPane')
+  citationDeleteBut = $('<span onclick="deleteCitation(this)" class="glyphicon glyphicon-remove pull-right citationAction citationDelete" aria-hidden="true"></span>')
+  citationAddButton = $('<span onclick="putCitation(this)" class="glyphicon glyphicon-pushpin pull-right citationAction citationCite" aria-hidden="true"></span>')
+  citationDiv.append(citationAddButton)
+  citationDiv.append(citationDeleteBut)
+  // console.log(citationBox)
+  citationBox.append(citationDiv)
   // console.log(citationBox.html())
 }
 
 function citationsToHTML(){
-  citationBox = $('#citations')
+  citationBox = $('#citationPane')
   // console.log(citationBox.html())
-  citations = (citationBox.html() + "").split('\n')
+  citations = citationBox.find('.citationText')
   // console.log(citations)
-  citationList = $('<p>Citations:</p><ul></ul>')
+  citationList = $('<div><p>Citations:<br></p></div>')
   for (i = 0; i < citations.length ; i ++){
-    citationList.append($('<li>'+citations[i]+"</li>"))
+    pTags = citations.eq(i).find('p')
+    citationList.append($("<p>"+(i+1).toString()+"-  "+pTags.eq(0).html()+'<br>   '+pTags.eq(1).html()+'</p>'))
   }
-  // console.log((citationList.prop('outerHTML')))
+  console.log((citationList.prop('outerHTML')))
   return citationList.prop('outerHTML')
 }
 
@@ -385,7 +410,7 @@ function saveDocument(){
   }
   $.post('/save_document/'+(window.location.href).split('/')[(window.location.href).split('/').length - 1], 
           {content: JSON.stringify(editor.getContents()),
-           citations: $('#citations').html(),
+           citations: $('#citationPane').html(),
            title: $('.doc_title').val()}, 
           function(data){
             // console.log("posted")            
@@ -433,6 +458,9 @@ $(document).ready(function (){
   });
   $("#dialog_form").on('submit',function(event) {
     event.preventDefault();
+    $("#share_success").fadeIn().delay(1000).fadeOut();
+    $("#divdeps").dialog('close');
+    
     var csrftoken = getCookie('csrftoken');
     $.ajaxSetup({
         beforeSend: function(xhr, settings) {
@@ -490,7 +518,7 @@ $(document).ready(function (){
 	downloadButton.on('click', function(){
 		// console.log($('.ql-editor').html())
 		// console.log(convertHtmlToRtf($('.ql-editor').html()))
-		download(convertHtmlToRtf($('.ql-editor').html()) + citationsToHTML(), $('.doc_title').val()+".rtf", 'text/plain')
+		download(convertHtmlToRtf($('.ql-editor').html() + citationsToHTML()), $('.doc_title').val()+".rtf", 'text/plain')
 	})
 
   saveButton.on('click', function(event){

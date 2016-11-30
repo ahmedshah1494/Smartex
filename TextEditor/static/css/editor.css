@@ -34,7 +34,7 @@
 	margin-left: 16vw;*/
 }
 
-#suggestionsPane{
+.pane{
 	border: solid;
 	border-width: 0.5px;
 	border-color: #CCCCCC;
@@ -43,6 +43,7 @@
 	/* the following line makes the box scrollable you 
 	need to comment the height in order to use the previous approach*/
 	min-height: 766px;
+	overflow: scroll;
 	/*overflow-y: scroll;*/
 }
 #general_info_list{
@@ -144,6 +145,26 @@
 	/*font-weight:bold;*/
 	width :100px;
 	background-color: #fff9eF;
+}
+
+.citationAction{
+	margin: 5px;
+}
+
+.citation a{
+	color: black;
+}
+
+.citation:hover{
+	background-color: #fff9eF;
+}
+
+.citationDelete:hover{
+	color: #B50C03;
+}
+
+.citationCite:hover{
+	color: #499CCA;
 }
 /*.citation_button2{
 	border-width: 1px;
