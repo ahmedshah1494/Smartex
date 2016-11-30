@@ -171,7 +171,7 @@ function clean_previous_cards(newly_added_cards){
     }
   for (i = 1; i <= cards_to_remove;i++) { 
 
-    $("#general_info div:first").remove();
+    $("#general_info div:last").remove();
     general_info_cards.dequeue();
     }
 }
