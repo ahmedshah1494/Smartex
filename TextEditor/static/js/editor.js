@@ -1,10 +1,11 @@
 var editor;
 var contextDelim = '\n'
 var general_info_cards = new Queue();
-console.log(general_info_cards);
-var lastSentence = ''
+// console.log(general_info_cards);
+var lastSentence = '\n'
 var number_cards_displayed = 3;
 var chat_socket;
+var first_request = true;
 function getCookie(name) {  
     var cookieValue = null;
     if (document.cookie && document.cookie != '') {
@@ -27,7 +28,7 @@ function getDate(jsonDate){
                     "Nov", "Dec"]
     date = new Date(jsonDate)
     var tod;
-    console.log(date)
+    // console.log(date)
     if (Math.floor(date.getUTCHours() / 12) % 2 == 0){
         tod = "a.m."
     }
@@ -114,12 +115,12 @@ function download(text, name, type) {
 }
 
 function loadDocument(id){
-  console.log(id)
+  // console.log(id)
   $.ajax("/load_document/"+id, {dataType: 'json'})
     .done(function(json){
       // $('.ql-editor').html(content);
-      // console.log($('.ql-editor').html())
-      console.log(json)
+      console.log($('.ql-editor').html())
+      // console.log(json)
       editor.setContents(JSON.parse(json['content']))
       $('#citations').html(json['citations'])
     })
@@ -134,7 +135,7 @@ function loadImage(path, width, height, target) {
     $('<img src="'+ path +'">').load(function() {
       $(this).width(width).height(height).appendTo(target);
     }).error(function(){
-      console.log("there was no image");
+      // console.log("there was no image");
     });
 }
 function card_exists(card)
@@ -184,7 +185,7 @@ function display_on_suggestions(suggestion_response){
 //________________________________GENERAL INFO SECTION ________________________________  
 if (typeof(suggestion_response['general info']) != "undefined")
 {
-  console.log(suggestion_response['general info'])
+  // console.log(suggestion_response['general info'])
   var cards_list_input = suggestion_response['general info'].length;
   var cards_list = $("#general_info");
   
@@ -230,11 +231,12 @@ if (typeof(suggestion_response['general info']) != "undefined")
 }
 //________________________________TEXT REPLACEMENT SECTION ________________________________  
   if (typeof(suggestion_response['replacements']) != "undefined"){
+    console.log(suggestion_response['replacements'])
     var text_replacement_list_input = suggestion_response['replacements'];
     var text_replacement_list = $("#text_replacement_list");
     var text_replacement_size = 7;
     var text_replacement_li_kept = text_replacement_size - text_replacement_list_input.length;
-    console.log(text_replacement_size);
+    // console.log(text_replacement_size);
     if (text_replacement_li_kept <= 0){
       text_replacement_list.html('');
       text_replacement_li_kept = 0;
@@ -254,42 +256,49 @@ if (typeof(suggestion_response['general info']) != "undefined")
         sentence = sentence.replace("+", " ");  
       }
       
-      exp = text_replacement_list_input[i][2];
-      //console.log(sentence);
-      var list_elem = document.createElement('li');
-      var explanation = document.createElement('p');
-      explanation.class =  ("explanation");
-      list_elem.class = ("b_sentences");
-      list_elem.append(sentence);
-      if (!(exp === null)){
-        explanation.append(exp);
-  
-      }
-      //comment this out if you don't wan an empty explanation html
-      list_elem.append(explanation);
-  
-      text_replacement_list.append(list_elem);
-    }
+  exp = null;
+  if (typeof(text_replacement_list_input[i])!= 'undefined'){
+    exp = text_replacement_list_input[i][2];
+  }
+  console.log(sentence);
+  var list_elem = document.createElement('li');
+  var explanation = document.createElement('p');
+  explanation.class =  ("explanation");
+  list_elem.class = ("b_sentences");
+  list_elem.append(sentence);
+  if (!(exp === null)){
+    explanation.append(exp);
 
+  }
+  //comment this out if you don't wan an empty explanation html
+  list_elem.append(explanation);
+  text_replacement_list.append(list_elem);
+
+}
 }
 
   //________________________________RELATED LINKS SECTION ________________________________   
   if (typeof(suggestion_response['links']) != "undefined"){       
-    var related_links_list_input = suggestion_response['links'][0];
-    if (typeof(related_links_list_input) == 'undefined'){
-      related_links_list_input = [];
-    }
-    //['google.com','yahoo.fr','france24.com', 'cnn.com'];
-    var related_links = $("#related_links_list");
-    console.log('heres related link list input');
-    //console.log(related_links_list_input[0]);
-    var related_links_size = 7;
-    var related_links_li_kept = related_links_size - related_links_list_input.length;
-    //console.log(related_links_li_kept);
-    if (related_links_li_kept <= 0){
-      related_links.html('');
-      related_links_li_kept = 0;
-    }
+  
+  var related_links_list_input = [];
+  if (typeof(suggestion_response['links'])!= 'undefined'){  
+    // console.log(suggestion_response['links']) ;
+    related_links_list_input = suggestion_response['links'][0];
+  }
+  if (typeof(related_links_list_input) == 'undefined'){
+    related_links_list_input = [];
+  }
+  //['google.com','yahoo.fr','france24.com', 'cnn.com'];
+  var related_links = $("#related_links_list");
+  // console.log('heres related link list input');
+  console.log(related_links_list_input[0]);
+  var related_links_size = 7;
+  var related_links_li_kept = related_links_size - related_links_list_input.length;
+  console.log(related_links_li_kept);
+  if (related_links_li_kept <= 0){
+    related_links.html('');
+    related_links_li_kept = 0;
+  }
 
   var list_length = $("#related_links_list li").length;
   for (i = 0; i < (list_length - related_links_li_kept);i++) {
@@ -298,11 +307,11 @@ if (typeof(suggestion_response['general info']) != "undefined")
   for (i = 0; (i < related_links_list_input.length && i < related_links_size) ; i++) {
     // var citation_link_button = $("<button>", {"class": "citation_button", "type":"button",'onclick':"citation_clicked(this)"});
     // citation_link_button.append("Cite");
-    console.log('_________________________________________LINKS_________________________')
-    console.log(related_links_list_input[i]);
+    // console.log('_________________________________________LINKS_________________________')
+    // console.log(related_links_list_input[i]);
     sentence = related_links_list_input[i].link;//['link'];
-    console.log('sentence');
-    console.log(sentence);
+    // console.log('sentence');
+    // console.log(sentence);
     title = related_links_list_input[i].title;
     htmlTitle = related_links_list_input[i].htmlTitle;
     snippet = related_links_list_input[i].snippet;
@@ -311,8 +320,8 @@ if (typeof(suggestion_response['general info']) != "undefined")
     s = '<p class ="link_snippet">'+htmlSnippet+'</p>';
     l = '<a class ="link_link" href = "'+sentence+'">'+sentence+'</a>';
     b = '<button class = "citation_button2" type = "button" onclick = "citation_clicked(this)">Cite</button>';
-    console.log('link html');
-    console.log(l);
+    // console.log('link html');
+    // console.log(l);
     related_links.append('<li><div class="link_div">'+t+s+l+'</div>'+b+'</li><hr size="30">');
     //related_links.append('<li><a href = '+sentence+'>'+sentence+'</a> <iframe src='+sentence+'</li>');
     // related_links.append(citation_link_button);
@@ -326,18 +335,19 @@ function analyseContext(){
   var current_text = getContext();
   var num_sentences = 3;
   var tokenized_text = current_text.split(".");
-  if (lastSentence == tokenized_text[tokenized_text.length - 2]){
+  // console.log(tokenized_text.length)
+  if (lastSentence == tokenized_text[tokenized_text.length - 1]){
 
     return
   }
-  lastSentence = tokenized_text[tokenized_text.length - 2];
+  lastSentence = tokenized_text[tokenized_text.length - 1];
   var suggestion_request = [];
   var l = tokenized_text.length;
   for (i = 1; (i <= l && i <=num_sentences); i++) { 
     suggestion_request.push(tokenized_text[l-i]);
   }
   lookup_string = suggestion_request.reverse().join('. ');
-  console.log(lookup_string);
+  // console.log(lookup_string);
   
   // $.ajax("/lookup/"+lookup_string, {dataType: 'json'})
   //       .done(function(json){
@@ -350,25 +360,25 @@ function analyseContext(){
 function addCitation(text){
   citationBox = $('#citations')
   citationBox.html((citationBox.html() + text).trim() + '\n')
-  console.log(citationBox.html())
+  // console.log(citationBox.html())
 }
 
 function citationsToHTML(){
   citationBox = $('#citations')
-  console.log(citationBox.html())
+  // console.log(citationBox.html())
   citations = (citationBox.html() + "").split('\n')
-  console.log(citations)
+  // console.log(citations)
   citationList = $('<p>Citations:</p><ul></ul>')
   for (i = 0; i < citations.length ; i ++){
     citationList.append($('<li>'+citations[i]+"</li>"))
   }
-  console.log((citationList.prop('outerHTML')))
+  // console.log((citationList.prop('outerHTML')))
   return citationList.prop('outerHTML')
 }
 
 function saveDocument(){
-  console.log($('.ql-editor').html())
-  console.log(editor.getContents())
+  // console.log($('.ql-editor').html())
+  // console.log(editor.getContents())
   saveLabel = $('#saveTime')
   if ($('.doc_title').val().length == 0){
     saveLabel.html('Autosave disabled, please enter a title to enable autosave')
@@ -379,7 +389,7 @@ function saveDocument(){
            citations: $('#citations').html(),
            title: $('.doc_title').val()}, 
           function(data){
-            console.log("posted")            
+            // console.log("posted")            
             saveLabel.html('Last Save:' + (new Date()))
           })
 }
@@ -393,7 +403,7 @@ var specialElementHandlers = {
 
 $(document).ready(function (){
   var csrftoken = getCookie('csrftoken');
-    console.log(csrftoken)
+    // console.log(csrftoken)
     $.ajaxSetup({
         beforeSend: function(xhr, settings) {
             xhr.setRequestHeader("X-CSRFToken", csrftoken);
@@ -409,10 +419,49 @@ $(document).ready(function (){
     theme: 'snow'
   };
 
+  $("#divdeps").dialog({
+    autoOpen: false,
+    show: 'slide',
+    resizable: false,
+    position: 'center',
+    stack: true,
+    height: 'auto',
+    width: 'auto',
+    modal: true
+  });
+  $("#share_btn").click(function() {
+    $("#divdeps").dialog('open');
+  });
+  $("#dialog_form").on('submit',function(event) {
+    event.preventDefault();
+    var csrftoken = getCookie('csrftoken');
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+    });
+    var field = $(this).find("#id_user_email");
+    $.post($(this).attr("action"),
+    {user_email: field.val()},
+    function(data){console.log("posted")})
+    .done(function(data) {
+      if (data['status'] == '0'){
+        alert("This email address is not registered on SmarTex");
+      }
+      else{
+        alert("Successfull Shared!");
+        $("#divdeps").dialog('close');
+      }
+    
+
+  });
+  });
+ 
   editor = new Quill('#editor', options);
   var downloadButton = $('<span class="ql-formats"><a class="custom_link" href="" id="a">Download</a></span>')
   var saveButton = $('<span class="ql-formats"><a class="custom_link" id="saveButton" href="">Save</a></span>')
   var pdfButton = $('<span class="ql-formats"><a class="custom_link" href="">Download PDF</a></span>')
+
   $(document).keydown(function(event) {
         // If Control or Command key is pressed and the S key is pressed
         // run save function. 83 is the key code for S.
@@ -440,29 +489,29 @@ $(document).ready(function (){
 
 
 	downloadButton.on('click', function(){
-		console.log($('.ql-editor').html())
-		console.log(convertHtmlToRtf($('.ql-editor').html()))
+		// console.log($('.ql-editor').html())
+		// console.log(convertHtmlToRtf($('.ql-editor').html()))
 		download(convertHtmlToRtf($('.ql-editor').html()) + citationsToHTML(), $('.doc_title').val()+".rtf", 'text/plain')
 	})
 
   saveButton.on('click', function(event){
     event.preventDefault();
     if ($('.doc_title').val().length == 0){
-      alert("Please enter a title")
+      alert("Please enter a title");
       return;
     }
 		saveDocument()
   })
 
   var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
-  // console.log(ws_scheme + '://' + window.location.host + "/editor" + window.location.pathname);
+  console.log(ws_scheme + '://' + window.location.host + "/editor" + window.location.pathname);
   chat_socket = new ReconnectingWebSocket(ws_scheme + '://' + window.location.host + window.location.pathname);
   // requires message to be a json
   chat_socket.onmessage = function(message){
-    console.log(message['data']);
+    // console.log(message['data']);
     display_on_suggestions(JSON.parse(message['data']));
   }
 
-  setInterval(analyseContext, 3000)
+  setInterval(analyseContext, 500)
   // setInterval(saveDocument, 5000)
 })

@@ -62,6 +62,37 @@ def loadEditor(request, docID):
 	return render(request, 'editor.html', context)
 
 @login_required
+def share(request, docID):
+	form = shareForm(request.POST)
+	if form.is_valid():
+		email = form.cleaned_data['user_email']
+		users = User.objects.filter(email=email)
+		if len(users) == 0:
+			return HttpResponse(json.dumps(json.dumps({'status': 0}), content_type='application/json'))
+		else:
+			user = users[0]
+			try:
+				doc = Document.objects.get(id=docID)
+			except:
+				raise Http404("Wrong Request")
+			newDoc = Document(title=doc.title,
+								date_created=doc.date_created,
+								date_modified=doc.date_modified,
+								author=MUser.objects.get(user_id=request.user.id))
+			newDoc.save()
+			s3 = boto3.resource('s3')
+			s3.meta.client.download_file('smartexdocuments', str(docID)+'.txt', 'TextEditor/Documents/'+request.user.username+'.temp')
+			with open('TextEditor/Documents/'+request.user.username+'.temp', 'r') as fin:
+				content = fin.read()
+				with open('TextEditor/Documents/'+request.user.username+'.temp','w') as fout:
+					mFile = File(fout)
+					mFile.write(content)
+				s3 = boto3.client('s3')
+				s3.upload_file('TextEditor/Documents/'+request.user.username+'.temp', 'smartexdocuments', str(newDoc.id)+'.txt')
+
+			return HttpResponse(json.dumps({'status': 1}), content_type='application/json')
+
+@login_required
 def saveDocument(request,docID):
 	if request.method != "POST":
 		return render(request, 'editor.html', {})

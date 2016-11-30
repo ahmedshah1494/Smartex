@@ -20,6 +20,7 @@ urlpatterns = [
     url(r'^save_document/(?P<docID>\d+)', views.saveDocument, name='save_document'),
     url(r'^dashboard', views.loadDashboard, name = 'dashboard'),
     url(r'^editor/(?P<docID>\d+)', views.loadEditor),
+    url(r'^share/(?P<docID>\d+)', views.share, name='share'),
     url(r'^load_document/(?P<docID>\d+)', views.loadDocument),
     url(r'^confirm/(?P<token>\S+)', views.confirm_registration, name = 'confirm'),
     url(r'^translate/(.+?)/(\S+)', views.translate),

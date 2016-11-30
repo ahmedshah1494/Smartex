@@ -46,7 +46,7 @@
 	/*overflow-y: scroll;*/
 }
 #general_info_list{
-	height: 150px;
+	height: 200px;
 	overflow-y: scroll;
 
 }
@@ -136,7 +136,7 @@
 	width :100px;
 	background-color: #fff9eF;
 }
-.citation_button{
+.citation_button2{
 	border-width: 2px;
 	border-radius: 5px;
 	border-color: #f2f2f2;

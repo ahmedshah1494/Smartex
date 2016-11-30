@@ -47,3 +47,9 @@ class SignupNewUser(forms.Form):
 		if User.objects.filter(email=user_email):
 			raise forms.ValidationError("Email is already taken.")
 		return user_email
+		
+class shareForm(forms.Form):
+	user_email = forms.EmailField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Email'}))
+	def clean(self):
+		cleaned_data = super(shareForm, self).clean()
+		return cleaned_data

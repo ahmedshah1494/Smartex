@@ -41,8 +41,25 @@
 				<input type='text' value='{{ title }}' placeholder='Enter Document Title' class='doc_title'></input>
 			</div>
 		</div>
-		<div class='col-md-7'>
+		<div class='col-md-4'>
 			<p id='saveTime'></p>
+		</div>
+		<div class='col-md-4'>
+			<button id = "share_btn"> share </button>
+			<div id="divdeps" style="display:none" title="">
+
+
+				<form id="dialog_form" class="navbar-form navbar-right" method="post" action="{% url 'share' docID %}" accept-charset="UTF-8">
+		        <div class="input-group">
+		            <input class="form-control" id="id_user_email" name="user_email" placeholder="Email" type="text">
+		        </div>
+		        <span>
+		        <input type="submit" id = "dialog_share" class="my-button"></input>
+		        <input type="hidden" />
+		                {% csrf_token %}
+		        </span>
+				
+			</div>
 		</div>
 	</div>
 	<div class='row'>
