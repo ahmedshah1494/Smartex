@@ -1,9 +1,10 @@
 """Example of Python client calling Knowledge Graph Search API."""
 import json
 import urllib
+import os
 
 def lookup(query):
-	api_key = 'AIzaSyBDe57yDVtBC9o3o3DT6i2Ld2zBc5nSlno'
+	api_key = os.environ['GOOGLE_KEY']
 	service_url = 'https://kgsearch.googleapis.com/v1/entities:search'
 	params = {
 	    'query': query,
@@ -23,7 +24,7 @@ def lookup(query):
 		print element['result']['name'] + ' (' + str(element['resultScore']) + ')' + element['result']['description']
 
 def customSearch(query):
-	api_key = 'AIzaSyBDe57yDVtBC9o3o3DT6i2Ld2zBc5nSlno'
+	api_key = os.environ['GOOGLE_KEY']
 	service_url = 'https://www.googleapis.com/customsearch/v1'
 	params = {
 	    'q': query,

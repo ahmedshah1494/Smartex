@@ -22,7 +22,7 @@ PROJECT_ROOT = os.path.realpath(os.path.dirname(__file__)) + '/'
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '79=td7hfyev1$l(v%m!hiaxu^7wni*9j%=p4o$8$t5b2i=!9ro'
+SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -58,7 +58,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.live.com'
 EMAIL_HOST_USER = 'grumblr@hotmail.com'
-EMAIL_HOST_PASSWORD = 'Mounira123'
+EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
 EMAIL_PORT = 587
 ROOT_URLCONF = 'TextEditor.urls'
 # URL to use if the authentication system requires a user to log in.
