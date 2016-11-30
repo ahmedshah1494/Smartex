@@ -540,5 +540,5 @@ $(document).ready(function (){
   }
 
   setInterval(analyseContext, 1000)
-  // setInterval(saveDocument, 5000)
+  setInterval(saveDocument, 5000)
 })
