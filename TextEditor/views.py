@@ -312,6 +312,7 @@ def confirm_registration (request, token):
 
 def email_for_password_reset(request):
     context = {}
+    errors = []
     message = ''
     if request.method == "GET":
         email_form = EmailForm()
