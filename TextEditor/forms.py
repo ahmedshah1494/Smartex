@@ -47,7 +47,23 @@ class SignupNewUser(forms.Form):
 		if User.objects.filter(email=user_email):
 			raise forms.ValidationError("Email is already taken.")
 		return user_email
-		
+class EmailForm(forms.Form):
+	user_email = forms.EmailField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Email'}))
+	def clean(self):
+		cleaned_data = super(EmailForm, self).clean()
+		return cleaned_data	
+class PasswordResetForm(forms.Form):
+	password1 = forms.CharField(max_length = 200,label='Password',widget = forms.PasswordInput(attrs={'class': 'form-control','placeholder': 'Password'}))
+	password2 = forms.CharField(max_length = 200,label='Confirm password', widget = forms.PasswordInput(attrs={'class': 'form-control','placeholder': 'Confirm Password'}))
+	def clean(self):
+		cleaned_data = super(PasswordResetForm, self).clean()
+		password1 = cleaned_data.get('password1')
+		password2 = cleaned_data.get('password2')
+		if password1 and password2 and password1 != password2:
+			raise forms.ValidationError("Passwords did not match.")
+		# Generally return the cleaned data we got from our parent.
+		return cleaned_data
+
 class shareForm(forms.Form):
 	user_email = forms.EmailField(widget=forms.TextInput(attrs={'class': 'form-control','placeholder': 'Email'}))
 	def clean(self):

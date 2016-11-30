@@ -1,5 +1,9 @@
 {% block login %}
+    
       <form id="signin" class="navbar-form navbar-right" method="post" role="form" action="{% url 'login' %}" accept-charset="UTF-8">
+        <div class="input-group">
+        <a style = "color:white" href="{% url 'email_for_password_reset' %}" class="forgot_pwd">forgot password?</a>
+        </div>
         <div class="input-group">
             <input id="username" type="username" class=" username form-control" name="username" value="" placeholder="username" required>
         </div>
@@ -13,4 +17,5 @@
                 {% csrf_token %}
         </span>
      </form>
+
 {% endblock login %}

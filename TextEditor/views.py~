@@ -54,7 +54,7 @@ def deleteDocument(request,docID):
 		item_to_delete = Document.objects.get(id=docID)
 		item_to_delete.delete()
 	except ObjectDoesNotExist:
-		raise Http404("Document does not exist")
+		errors.append('The item did not exist in the todo list.')
 
 	muser = MUser.objects.get(user_id=request.user.id)
 	documents = Document.objects.filter(author_id=muser.id)
@@ -63,7 +63,7 @@ def deleteDocument(request,docID):
 	context['errors'] = errors
 	# #print documents[0].title
 	# context['first_name'] = request.user.first_name
-	return redirect('/dashboard')
+	return render(request, 'dashboard.html', context)
 
 @login_required
 def loadEditor(request, docID):
@@ -77,18 +77,14 @@ def loadEditor(request, docID):
 		print doc.id
 		return redirect('/editor/'+str(doc.id))
 	else:
-		try:
-			doc = Document.objects.get(id=docID)
-		except:
-			raise Http404("Document does not exist")
+		doc = Document.objects.get(id=docID)
 		context = {'docID': docID,
 					'title': doc.title}
 
 	return render(request, 'editor.html', context)
 
 @login_required
-def share(request, docID):
-	form = shareForm(request.POST)
+def share(requests, docID):	
 	if form.is_valid():
 		email = form.cleaned_data['user_email']
 		users = User.objects.filter(email=email)
@@ -115,7 +111,7 @@ def share(request, docID):
 				s3 = boto3.client('s3')
 				s3.upload_file('TextEditor/Documents/'+request.user.username+'.temp', 'smartexdocuments', str(newDoc.id)+'.txt')
 
-			return HttpResponse(json.dumps({'status': 1}), content_type='application/json')
+			return HttpResponse(json.dumps(json.dumps({'status': 1}), content_type='application/json'))
 
 @login_required
 def saveDocument(request,docID):
@@ -140,8 +136,6 @@ def saveDocument(request,docID):
 	doc.title = request.POST['title']
 	doc.save()
 	os.remove('TextEditor/Documents/'+request.user.username+'.temp')
-	context = {'docID': docID,
-					'title': doc.title}
 	# else:
 	# 	with open('TextEditor/Documents/'+muser.user.username+'.temp','w') as f:
 	# 		mFile = File(f)
@@ -156,7 +150,7 @@ def saveDocument(request,docID):
 	# 		author=MUser.objects.get(user_id=request.user.id))
 	# 	doc.save()
 	# 	os.remove('TextEditor/Documents/'+muser.user.username+'.temp')
-	return render(request, 'editor.html', context)
+	return render(request, 'editor.html', {})
 
 @login_required
 def loadDashboard(request):
@@ -344,7 +338,7 @@ def email_for_password_reset(request):
 
     send_mail(subject= "Reset your password",\
                 message = email_body,\
-                from_email= "grumblr@hotmail.com",
+                from_email= "Smartex@hotmail.com",
                 recipient_list = [my_user.email])
 
     message = "Please check your email in order to reset your password"
@@ -359,7 +353,6 @@ def reset_password(request, token):
     try:
     	muser = MUser.objects.get(activation_key=token)
     	print ("STARTING HERRW")
-    	print(muser.user.username)
     except:
     	print("_________THIS IS WHERE WERE STUCK___________")
     	return render(request, 'user-not-found.html',context)
@@ -374,13 +367,12 @@ def reset_password(request, token):
 		email_form = PasswordResetForm()
 		context = {'email_form':email_form,'token':token}  
 		return render(request,'password_reset.html', context)
-    email_form = PasswordResetForm(request.POST)
+	email_form = PasswordResetForm(request.POST)
     if (not email_form.is_valid()):
        	context = {'email_form':email_form, 'message':"error in email form"}
        	return render(request,'password_reset.html', context)
 
     #password = email_form.cleaned_data['password1']
-
     u.set_password(email_form.cleaned_data['password1'])
     u.save()
     return redirect('/profile')

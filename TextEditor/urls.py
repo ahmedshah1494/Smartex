@@ -28,5 +28,7 @@ urlpatterns = [
     url(r'^logout$', django.contrib.auth.views.logout_then_login, name='logout'),
     url(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
     url(r'^delete_document/(?P<docID>\d+)', views.deleteDocument, name='delete_document'),
+    url(r'^email-for-password-reset$',views.email_for_password_reset, name='email_for_password_reset'),
+    url(r'^reset-password/(?P<token>\S+)$', views.reset_password, name = 'reset_password'),
 
 ]
