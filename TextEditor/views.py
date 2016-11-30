@@ -78,7 +78,7 @@ def loadEditor(request, docID):
 		return redirect('/editor/'+str(doc.id))
 	else:
 		try:
-			doc = Document.objects.get(id=docID)
+			doc = Document.objects.get(id=docID, author=MUser.objects.get(user_id=request.user.id))
 		except:
 			raise Http404("Document does not exist")
 		context = {'docID': docID,
@@ -97,13 +97,13 @@ def share(request, docID):
 		else:
 			user = users[0]
 			try:
-				doc = Document.objects.get(id=docID)
+				doc = Document.objects.get(id=docID, author=MUser.objects.get(user_id=request.user.id))
 			except:
 				raise Http404("Wrong Request")
 			newDoc = Document(title=doc.title,
 								date_created=doc.date_created,
 								date_modified=doc.date_modified,
-								author=MUser.objects.get(user_id=request.user.id))
+								author=MUser.objects.get(user_id=user.id))
 			newDoc.save()
 			s3 = boto3.resource('s3')
 			s3.meta.client.download_file('smartexdocuments', str(docID)+'.txt', 'TextEditor/Documents/'+request.user.username+'.temp')
@@ -124,7 +124,8 @@ def saveDocument(request,docID):
 	# #print request.POST['title']
 	# path = default_storage.save('/path/to/file', ContentFile('new content'))
 	try:
-		doc =Document.objects.get(id=docID)
+		muser = MUser.objects.get(user_id=request.user.id)
+		doc = Document.objects.get(id=docID, author_id=muser.id)
 	except:
 		raise Http404("Wrong Request")
 	# if len(docs) > 0:
@@ -337,9 +338,7 @@ def email_for_password_reset(request):
     this_user = MUser.objects.get(user=my_user)
     this_user.activation_key = token
     email_body = """
-            Welcome to Smartex, please click the link below to
-            verify your email address and complete the registration
-            of your account:
+            Welcome again, please click the link below to reset your password:
             http://smartexx.herokuapp.com/reset-password/"""+token
 
     send_mail(subject= "Reset your password",\
@@ -361,11 +360,8 @@ def reset_password(request, token):
     	print ("STARTING HERRW")
     	print(muser.user.username)
     except:
-    	print("_________THIS IS WHERE WERE STUCK___________")
     	return render(request, 'user-not-found.html',context)
-    	#raise Http404("Activation Key Not Found")
-	print("_________LOGGIKNG UAWSER___________")
-    
+    	#raise Http404("Activation Key Not Found")    
     context['full_name'] = muser.user.first_name+' '+muser.user.last_name
     context['username'] = muser.user.username
     context['email'] = muser.user.email

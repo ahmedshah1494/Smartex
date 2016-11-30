@@ -220,8 +220,7 @@ if (typeof(suggestion_response['general info']) != "undefined")
       general_info_card.append('<hr size="30">');
 
       var general_info_box = $("#general_info_list");
-      general_info_box.append(general_info_card);
-
+      general_info_box.prepend(general_info_card);
       newly_added_cards++;
 
 
@@ -271,7 +270,7 @@ if (typeof(suggestion_response['general info']) != "undefined")
   }
   //comment this out if you don't wan an empty explanation html
   list_elem.append(explanation);
-  text_replacement_list.append(list_elem);
+  text_replacement_list.prepend(list_elem);
 
 }
 }
@@ -321,7 +320,7 @@ if (typeof(suggestion_response['general info']) != "undefined")
     b = '<button class = "citation_button2" type = "button" onclick = "citation_clicked(this)">Cite</button>';
     // console.log('link html');
     // console.log(l);
-    related_links.append('<li><div class="link_div">'+t+s+l+'</div>'+b+'</li><hr size="30">');
+    related_links.prepend('<li><div class="link_div">'+t+s+l+'</div>'+b+'</li><hr size="30">');
     //related_links.append('<li><a href = '+sentence+'>'+sentence+'</a> <iframe src='+sentence+'</li>');
     // related_links.append(citation_link_button);
     }
@@ -476,7 +475,6 @@ $(document).ready(function (){
         alert("This email address is not registered on SmarTex");
       }
       else{
-        alert("Successfull Shared!");
         $("#divdeps").dialog('close');
       }
     
