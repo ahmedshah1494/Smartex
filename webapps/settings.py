@@ -25,7 +25,7 @@ PROJECT_ROOT = os.path.realpath(os.path.dirname(__file__)) + '/'
 SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
+DEBUG = True
 
 ALLOWED_HOSTS = []
 
