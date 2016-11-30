@@ -115,6 +115,8 @@ def saveDocument(request,docID):
 	doc.title = request.POST['title']
 	doc.save()
 	os.remove('TextEditor/Documents/'+request.user.username+'.temp')
+	context = {'docID': docID,
+					'title': doc.title}
 	# else:
 	# 	with open('TextEditor/Documents/'+muser.user.username+'.temp','w') as f:
 	# 		mFile = File(f)
@@ -129,7 +131,7 @@ def saveDocument(request,docID):
 	# 		author=MUser.objects.get(user_id=request.user.id))
 	# 	doc.save()
 	# 	os.remove('TextEditor/Documents/'+muser.user.username+'.temp')
-	return render(request, 'editor.html', {})
+	return render(request, 'editor.html', context)
 
 @login_required
 def loadDashboard(request):

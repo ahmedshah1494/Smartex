@@ -12,7 +12,7 @@ from django.db import transaction
 import os
 
 log = logging.getLogger(__name__)
-MAX_CACHE_SIZE = 100
+MAX_CACHE_SIZE = 5
 lock = threading.Lock()
 
 if not os.path.exists('TextEditor/cache'):
@@ -53,14 +53,12 @@ def evacuateCache():
             i.delete()
     lock.release()
 
-# @transaction.atomic
 def cacheLookup(key, dataType, reply_channel):
     h = hashlib.sha224(key)
     item = CachedItem.objects.filter(key=h.hexdigest(), data_type=dataType)[0]
     res = json.loads(item.data_file.file.read())
     return res
 
-# @transaction.atomic
 def cacheInsert(h, res, dataType, reply_channel):
     with open('TextEditor/cache/'+h.hexdigest(), 'w') as f:
         f.write(json.dumps(res))
@@ -69,7 +67,6 @@ def cacheInsert(h, res, dataType, reply_channel):
                             data_type= dataType,
                             data_file=File(f))
         item.save()
-    #evacuateCache()
 
 def lookup(text, reply_channel):
     keywords = context.getKeywords(text)
